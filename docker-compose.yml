@@ -1,0 +1,18 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=caching_sha2_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: preorder
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
+      TZ: Asia/Seoul
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
