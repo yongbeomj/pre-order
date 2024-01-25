@@ -1,17 +1,32 @@
 package com.shop.preorder.controller;
 
+import com.shop.preorder.domain.User;
+import com.shop.preorder.dto.UserJoinRequest;
+import com.shop.preorder.dto.UserJoinResponse;
+import com.shop.preorder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
+
     @Operation(summary = "회원가입")
-    @PostMapping("/sign-up")
-    public void join() {
+    @PostMapping("/join")
+    public ResponseEntity<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest userJoinRequest, Errors errors) {
+        User user = userService.joinUser(userJoinRequest);
+        return ResponseEntity.ok(UserJoinResponse.of(user));
     }
 
     @Operation(summary = "이메일 인증")
