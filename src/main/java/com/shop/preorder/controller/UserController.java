@@ -1,8 +1,8 @@
 package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.User;
-import com.shop.preorder.dto.UserJoinRequest;
-import com.shop.preorder.dto.UserJoinResponse;
+import com.shop.preorder.dto.*;
+import com.shop.preorder.service.MailService;
 import com.shop.preorder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Users")
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final MailService mailService;
 
     @Operation(summary = "회원가입")
     @PostMapping("/join")
@@ -28,13 +28,22 @@ public class UserController {
             throw new IllegalArgumentException();
         }
 
+        // 인증 번호 일치 여부
+        boolean isAuth = mailService.isAuthNumber(userJoinRequest.getEmail(), userJoinRequest.getAutoNumber());
+        if (!isAuth) {
+            throw new IllegalArgumentException();
+        }
+
+        // 회원 가입
         User user = userService.joinUser(userJoinRequest);
         return ResponseEntity.ok(UserJoinResponse.of(user));
     }
 
     @Operation(summary = "이메일 인증")
-    @PostMapping("/check-mail")
-    public void checkMail() {
+    @PostMapping("/join/email-check")
+    public ResponseEntity<?> checkMail(@Valid @RequestBody EmailCheckRequest emailCheckRequest) {
+        int result = mailService.sendEmail(emailCheckRequest.getEmail());
+        return ResponseEntity.ok(result);
     }
 
     @Operation(summary = "로그인")

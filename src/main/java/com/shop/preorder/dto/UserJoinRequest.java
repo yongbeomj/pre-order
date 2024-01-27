@@ -29,6 +29,8 @@ public class UserJoinRequest {
     @NotBlank
     private String greeting;
 
+    private int AutoNumber;
+
     // dto to entity
     public User toEntity() {
         return User.builder()
