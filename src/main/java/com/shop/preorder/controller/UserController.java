@@ -39,7 +39,9 @@ public class UserController {
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public void login() {
+    public ResponseEntity<?> login(@RequestBody UserLoginRequest userLoginRequest) {
+        String token = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+        return ResponseEntity.ok(token);
     }
 
     @Operation(summary = "로그아웃")
