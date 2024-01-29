@@ -1,11 +1,13 @@
 package com.shop.preorder.domain;
 
+import com.shop.preorder.dto.UserJoinResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "users")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
@@ -29,6 +31,9 @@ public class User extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String greeting;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
 
     @Builder
     public User(String email, String password, String name, String profileImage, String greeting) {

@@ -2,6 +2,8 @@ package com.shop.preorder.service;
 
 import com.shop.preorder.domain.User;
 import com.shop.preorder.dto.UserJoinRequest;
+import com.shop.preorder.dto.UserModifyRequest;
+import com.shop.preorder.dto.UserPwModifyRequest;
 import com.shop.preorder.repository.UserRepository;
 import com.shop.preorder.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class UserService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.access.expiration}")
+    @Value("${jwt.expiration-in-second}")
     private Long expiredTimeMs;
 
     // 회원가입
@@ -57,4 +60,51 @@ public class UserService {
 
         return JwtTokenUtil.createToken(email, secretKey, expiredTimeMs);
     }
+
+    // 프로필 수정
+    @Transactional
+    public User modifyProfile(UserModifyRequest userModifyRequest, String email) {
+        User findUser = userRepository.findByEmail(email).orElseThrow();
+
+        if (isNullOrEmptyFields(userModifyRequest.getName())) {
+            findUser.setName(userModifyRequest.getName());
+        }
+
+        if (isNullOrEmptyFields(userModifyRequest.getProfileImage())) {
+            findUser.setProfileImage(userModifyRequest.getProfileImage());
+        }
+
+        if (isNullOrEmptyFields(userModifyRequest.getGreeting())) {
+            findUser.setGreeting(userModifyRequest.getGreeting());
+        }
+
+        return userRepository.saveAndFlush(findUser);
+    }
+
+    // 입력 필드 빈 값 체크
+    public static boolean isNullOrEmptyFields(String value) {
+        return StringUtils.hasText(value);
+    }
+
+    @Transactional
+    public User modifyPassword(UserPwModifyRequest userPwModifyRequest, String email) {
+        User findUser = userRepository.findByEmail(email).orElseThrow();
+
+        // 이전 비밀번호 일치 여부
+        if (!passwordEncoder.matches(userPwModifyRequest.getPrevPassword(), findUser.getPassword())) {
+            throw new IllegalArgumentException("이전 비밀번호 일치하지 않음");
+        }
+
+        // password 암호화
+        String updatePassword = passwordEncoder.encode(userPwModifyRequest.getNewPassword());
+        findUser.setPassword(updatePassword);
+
+        return userRepository.saveAndFlush(findUser);
+    }
+
+    // 로그아웃
+    public void logout(String token) {
+    }
+
+
 }
