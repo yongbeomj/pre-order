@@ -3,6 +3,7 @@ package com.shop.preorder.service;
 import com.shop.preorder.domain.User;
 import com.shop.preorder.dto.UserJoinRequest;
 import com.shop.preorder.dto.UserModifyRequest;
+import com.shop.preorder.dto.UserPwModifyRequest;
 import com.shop.preorder.repository.UserRepository;
 import com.shop.preorder.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +84,22 @@ public class UserService {
     // 입력 필드 빈 값 체크
     public static boolean isNullOrEmptyFields(String value) {
         return StringUtils.hasText(value);
+    }
+
+    @Transactional
+    public User modifyPassword(UserPwModifyRequest userPwModifyRequest, String email) {
+        User findUser = userRepository.findByEmail(email).orElseThrow();
+
+        // 이전 비밀번호 일치 여부
+        if (!passwordEncoder.matches(userPwModifyRequest.getPrevPassword(), findUser.getPassword())) {
+            throw new IllegalArgumentException("이전 비밀번호 일치하지 않음");
+        }
+
+        // password 암호화
+        String updatePassword = passwordEncoder.encode(userPwModifyRequest.getNewPassword());
+        findUser.setPassword(updatePassword);
+
+        return userRepository.saveAndFlush(findUser);
     }
 
     // 로그아웃

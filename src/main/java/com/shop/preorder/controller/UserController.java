@@ -96,7 +96,7 @@ public class UserController {
 
     @Operation(summary = "회원정보 수정")
     @PutMapping("/modify")
-    public ResponseEntity<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication, HttpServletRequest request) {
+    public ResponseEntity<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication) {
         // 인증 정보로 유저 정보 추출
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
 
@@ -104,5 +104,19 @@ public class UserController {
         return ResponseEntity.ok(UserModifyResponse.of(updateUser));
     }
 
+    @Operation(summary = "회원 비밀번호 수정")
+    @PutMapping("/pw-modify")
+    public ResponseEntity<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
+        // 입력 비밀번호 validation
+        if (result.hasErrors()) {
+            throw new IllegalArgumentException();
+        }
+
+        // 인증 정보로 유저 정보 추출
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+
+        User updateUser = userService.modifyPassword(userPwModifyRequest, userDetails.getUsername());
+        return ResponseEntity.ok(UserPwModifyResponse.of(updateUser));
+    }
 
 }
