@@ -48,14 +48,14 @@ public class UserService {
 
     // 로그인
     public String login(String email, String password) {
-//        // 회원가입 여부 체크
-//        User savedUser = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-//
-//        // 비밀번호 체크
-//        if (!passwordEncoder.matches(password, savedUser.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호 일치하지 않음");
-//        }
+        // 회원가입 여부 체크
+        User savedUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 비밀번호 체크
+        if (!passwordEncoder.matches(password, savedUser.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 일치하지 않음");
+        }
 
         return JwtTokenUtil.createToken(email, secretKey, expiredTimeMs);
     }
