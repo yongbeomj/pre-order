@@ -1,9 +1,9 @@
 package com.shop.preorder.service;
 
 import com.shop.preorder.domain.User;
-import com.shop.preorder.dto.UserJoinRequest;
-import com.shop.preorder.dto.UserModifyRequest;
-import com.shop.preorder.dto.UserPwModifyRequest;
+import com.shop.preorder.dto.request.UserJoinRequest;
+import com.shop.preorder.dto.request.UserModifyRequest;
+import com.shop.preorder.dto.request.UserPwModifyRequest;
 import com.shop.preorder.repository.UserRepository;
 import com.shop.preorder.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;

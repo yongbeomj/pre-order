@@ -1,26 +1,24 @@
-package com.shop.preorder.dto;
+package com.shop.preorder.dto.response;
 
 import com.shop.preorder.domain.User;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserJoinResponse {
+public class UserPwModifyResponse {
 
     private Long id;
     private String email;
 
     // entity to dto
-    public static UserJoinResponse of(User user) {
-        return new UserJoinResponse(
+    public static UserPwModifyResponse of(User user) {
+        return new UserPwModifyResponse(
                 user.getId(),
                 user.getEmail()
         );
     }
-
 
 }

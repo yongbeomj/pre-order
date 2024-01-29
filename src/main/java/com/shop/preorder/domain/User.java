@@ -1,6 +1,5 @@
 package com.shop.preorder.domain;
 
-import com.shop.preorder.dto.UserJoinResponse;
 import jakarta.persistence.*;
 import lombok.*;
 

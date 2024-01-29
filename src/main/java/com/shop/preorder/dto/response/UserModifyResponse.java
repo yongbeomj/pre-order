@@ -1,4 +1,4 @@
-package com.shop.preorder.dto;
+package com.shop.preorder.dto.response;
 
 import com.shop.preorder.domain.User;
 import lombok.AllArgsConstructor;
