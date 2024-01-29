@@ -19,11 +19,11 @@ public class JwtTokenUtil {
     // Token 생성
     public static String createToken(String email, String key, long expireTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("email", email);
+        claims.put("userName", email);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
                 .signWith(getKey(key), SignatureAlgorithm.HS256)
                 .compact();
@@ -34,5 +34,25 @@ public class JwtTokenUtil {
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    // claim return
+    public static Claims extractClaims(String token, String key) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getKey(key))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public static String getUserName(String token, String key) {
+        return extractClaims(token, key).get("userName", String.class);
+    }
+
+    // token 만료 여부 체크 (true : 만료, false : 활성)
+    public static Boolean isTokenExpired(String token, String key) {
+        Date expiration = extractClaims(token, key).getExpiration();
+        return expiration.before(new Date());
+    }
+
 
 }
