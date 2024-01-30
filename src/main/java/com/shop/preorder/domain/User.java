@@ -3,6 +3,9 @@ package com.shop.preorder.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(name = "users")
 @Entity
 @Getter
@@ -13,7 +16,6 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -25,7 +27,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "profile_image", nullable = false)
+    @Column(nullable = false)
     private String profileImage;
 
     @Column(nullable = false)
@@ -33,6 +35,12 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
+
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
+    private List<Follow> fromFollows = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
+    private List<Follow> toFollows = new ArrayList<>();
 
     @Builder
     public User(String email, String password, String name, String profileImage, String greeting) {

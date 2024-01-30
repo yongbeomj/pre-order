@@ -1,9 +1,6 @@
 package com.shop.preorder.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +21,8 @@ public class CustomUserDetails implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority(this.user.getRole().toString()));
     }
 
-    public Long getUserId() {
-        return this.user.getId();
+    public User getUser() {
+        return this.user;
     }
 
     @Override
