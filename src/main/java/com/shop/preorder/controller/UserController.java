@@ -1,14 +1,16 @@
 package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.User;
-import com.shop.preorder.dto.*;
+import com.shop.preorder.dto.request.*;
+import com.shop.preorder.dto.response.UserJoinResponse;
+import com.shop.preorder.dto.response.UserModifyResponse;
+import com.shop.preorder.dto.response.UserPwModifyResponse;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.MailService;
 import com.shop.preorder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

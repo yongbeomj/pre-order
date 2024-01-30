@@ -1,4 +1,4 @@
-package com.shop.preorder.dto;
+package com.shop.preorder.dto.request;
 
 import com.shop.preorder.domain.User;
 import jakarta.validation.constraints.NotBlank;

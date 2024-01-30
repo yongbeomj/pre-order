@@ -1,4 +1,4 @@
-package com.shop.preorder.dto;
+package com.shop.preorder.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
