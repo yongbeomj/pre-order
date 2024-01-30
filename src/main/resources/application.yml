@@ -33,9 +33,9 @@ spring:
             required: true
           auth: true
 
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
 
 logging:
   level:
