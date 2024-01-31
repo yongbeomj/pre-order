@@ -1,7 +1,5 @@
 package com.shop.preorder.config.filter;
 
-import com.shop.preorder.exception.BaseException;
-import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;

@@ -12,9 +12,11 @@ import com.shop.preorder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -68,43 +70,21 @@ public class UserController {
         }
 
         String accessToken = userService.login(userLoginRequest);
-
-        // token 쿠키 저장
-        Cookie cookie = new Cookie("access_token", accessToken);
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-
         return ResponseDto.success(UserLoginResponse.of(accessToken));
     }
 
-//    @Operation(summary = "로그아웃")
-//    @GetMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-//        // 클라이언트에서 요청된 모든 쿠키 가져오기
-//        Cookie[] cookies = request.getCookies();
-//        String token = "";
-//
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("access_token")) {
-//                    token = cookie.getValue();
-//                    userService.logout(token);
-//                    // 토큰이 저장된 쿠키를 삭제하기 위해 유효 시간을 0으로 설정
-//                    cookie.setMaxAge(0);
-//                    cookie.setPath("/");
-//                    response.addCookie(cookie);
-//                    break;
-//                }
-//            }
-//        }
-//
-//        userService.logout(token);
-//
-//        return ResponseEntity.ok("ok");
-//    }
+    @Operation(summary = "로그아웃")
+    @GetMapping("/logout")
+    public ResponseDto<TokenResponse> logout(HttpServletRequest request, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = header.split(" ")[1].trim();
+
+        userService.logout(token);
+        return ResponseDto.success(TokenResponse.of(userDetails.getUsername()));
+    }
+
 
     @Operation(summary = "회원정보 수정")
     @PutMapping("/modify")

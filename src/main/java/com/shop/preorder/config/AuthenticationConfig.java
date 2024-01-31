@@ -34,16 +34,6 @@ public class AuthenticationConfig {
                         .requestMatchers("/api/users/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                // logout
-//                .logout((logout) -> logout
-//                        .logoutUrl("/api/users/logout")
-//                        .deleteCookies("remember-me")
-//                        .addLogoutHandler((request, response, authentication) -> {
-//                            SecurityContextHolder.clearContext();
-//                            request.getSession().invalidate();
-//
-//                        })
-//                )
                 // 세션 미사용
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
