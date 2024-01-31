@@ -1,9 +1,14 @@
 package com.shop.preorder.service;
 
 import com.shop.preorder.domain.User;
+import com.shop.preorder.dto.common.ErrorResponse;
+import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.request.UserJoinRequest;
+import com.shop.preorder.dto.request.UserLoginRequest;
 import com.shop.preorder.dto.request.UserModifyRequest;
 import com.shop.preorder.dto.request.UserPwModifyRequest;
+import com.shop.preorder.exception.BaseException;
+import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.repository.UserRepository;
 import com.shop.preorder.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,28 +48,29 @@ public class UserService {
     // 이메일 중복 여부
     public void duplicateEmail(String email) {
         userRepository.findByEmail(email).ifPresent(it -> {
-            throw new IllegalArgumentException("이메일 중복");
+            throw new BaseException(ErrorCode.DUPLICATED_USER_EMAIL);
         });
     }
 
     // 로그인
-    public String login(String email, String password) {
+    public String login(UserLoginRequest userLoginRequest) {
         // 회원가입 여부 체크
-        User savedUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        User savedUser = userRepository.findByEmail(userLoginRequest.getEmail())
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         // 비밀번호 체크
-        if (!passwordEncoder.matches(password, savedUser.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 일치하지 않음");
-        }
+//        if (!passwordEncoder.matches(userLoginRequest.getPassword(), savedUser.getPassword())) {
+//            throw new BaseException(ErrorCode.INVALID_PASSWORD);
+//        }
 
-        return JwtTokenUtil.createToken(email, secretKey, expiredTimeMs);
+        return JwtTokenUtil.createToken(userLoginRequest.getEmail(), secretKey, expiredTimeMs);
     }
 
     // 프로필 수정
     @Transactional
     public User modifyProfile(UserModifyRequest userModifyRequest, String email) {
-        User findUser = userRepository.findByEmail(email).orElseThrow();
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         if (isNullOrEmptyFields(userModifyRequest.getName())) {
             findUser.setName(userModifyRequest.getName());
@@ -88,11 +94,12 @@ public class UserService {
 
     @Transactional
     public User modifyPassword(UserPwModifyRequest userPwModifyRequest, String email) {
-        User findUser = userRepository.findByEmail(email).orElseThrow();
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         // 이전 비밀번호 일치 여부
         if (!passwordEncoder.matches(userPwModifyRequest.getPrevPassword(), findUser.getPassword())) {
-            throw new IllegalArgumentException("이전 비밀번호 일치하지 않음");
+            throw new BaseException(ErrorCode.INVALID_PASSWORD);
         }
 
         // password 암호화

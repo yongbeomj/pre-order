@@ -1,10 +1,11 @@
 package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.User;
+import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.request.*;
-import com.shop.preorder.dto.response.UserJoinResponse;
-import com.shop.preorder.dto.response.UserModifyResponse;
-import com.shop.preorder.dto.response.UserPwModifyResponse;
+import com.shop.preorder.dto.response.*;
+import com.shop.preorder.exception.BaseException;
+import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.MailService;
 import com.shop.preorder.service.UserService;
@@ -32,34 +33,43 @@ public class UserController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest userJoinRequest, BindingResult result) {
+    public ResponseDto<UserJoinResponse> join(@Valid @RequestBody UserJoinRequest userJoinRequest, BindingResult result) {
         if (result.hasErrors()) {
-            throw new IllegalArgumentException();
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
 
         // 인증 번호 일치 여부
         boolean isAuth = mailService.isAuthNumber(userJoinRequest.getEmail(), userJoinRequest.getAutoNumber());
         if (!isAuth) {
-            throw new IllegalArgumentException();
+            throw new BaseException(ErrorCode.INVALID_AUTH_CODE);
         }
 
         // 회원 가입
         User user = userService.joinUser(userJoinRequest);
-        return ResponseEntity.ok(UserJoinResponse.of(user));
+        return ResponseDto.success(UserJoinResponse.of(user));
     }
 
     @Operation(summary = "이메일 인증")
     @PostMapping("/join/email-check")
-    public ResponseEntity<?> checkMail(@Valid @RequestBody EmailCheckRequest emailCheckRequest) {
-        int result = mailService.sendEmail(emailCheckRequest.getEmail());
-        return ResponseEntity.ok(result);
+    public ResponseDto<EmailCheckResponse> checkMail(@Valid @RequestBody EmailCheckRequest emailCheckRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
+        }
+
+        int authCode = mailService.sendEmail(emailCheckRequest.getEmail());
+        return ResponseDto.success(EmailCheckResponse.of(authCode));
     }
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response) {
-        String accessToken = userService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
+    public ResponseDto<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest, BindingResult result, HttpServletResponse response) {
+        if (result.hasErrors()) {
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
+        }
 
+        String accessToken = userService.login(userLoginRequest);
+
+        // token 쿠키 저장
         Cookie cookie = new Cookie("access_token", accessToken);
         cookie.setMaxAge(60 * 60 * 24 * 7);
         cookie.setHttpOnly(true);
@@ -67,7 +77,7 @@ public class UserController {
 
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(accessToken);
+        return ResponseDto.success(UserLoginResponse.of(accessToken));
     }
 
 //    @Operation(summary = "로그아웃")
@@ -109,9 +119,8 @@ public class UserController {
     @Operation(summary = "회원 비밀번호 수정")
     @PutMapping("/pw-modify")
     public ResponseEntity<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
-        // 입력 비밀번호 validation
         if (result.hasErrors()) {
-            throw new IllegalArgumentException();
+            throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
 
         // 인증 정보로 유저 정보 추출

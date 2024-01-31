@@ -2,6 +2,8 @@ package com.shop.preorder.service;
 
 import com.shop.preorder.domain.CustomUserDetails;
 import com.shop.preorder.domain.User;
+import com.shop.preorder.exception.BaseException;
+import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(()
-                -> new IllegalArgumentException("사용자 없음"));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
         log.debug("loadUserByUsername user : {}", user);
 
         return new CustomUserDetails(user);
