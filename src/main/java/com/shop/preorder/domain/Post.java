@@ -15,19 +15,16 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User writer;
+    private User user;
 
     @Builder
-    public Post(String title, String contents, User writer) {
+    public Post(String title, String contents, User user) {
         this.title = title;
         this.contents = contents;
-        this.writer = writer;
+        this.user = user;
     }
 }

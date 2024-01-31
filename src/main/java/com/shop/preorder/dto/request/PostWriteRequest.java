@@ -15,11 +15,11 @@ public class PostWriteRequest {
     private String title;
     private String contents;
 
-    public Post toEntity(User writer) {
+    public Post toEntity(User user) {
         return Post.builder()
                 .title(this.title)
                 .contents(this.contents)
-                .writer(writer)
+                .user(user)
                 .build();
     }
 
