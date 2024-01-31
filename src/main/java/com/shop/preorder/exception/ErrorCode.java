@@ -15,6 +15,8 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid token"),
     INVALID_AUTH_CODE(HttpStatus.UNAUTHORIZED, "Invalid email authentication code"),
 
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not founded"),
+
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, "Duplicated user email"),
 
     ALREADY_USER_FOLLOW(HttpStatus.CONFLICT, "Already user followed"),
