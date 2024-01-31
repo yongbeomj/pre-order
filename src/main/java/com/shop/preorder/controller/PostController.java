@@ -1,8 +1,11 @@
 package com.shop.preorder.controller;
 
+import com.shop.preorder.domain.Comment;
 import com.shop.preorder.domain.Post;
 import com.shop.preorder.dto.common.ResponseDto;
+import com.shop.preorder.dto.request.CommentWriteRequest;
 import com.shop.preorder.dto.request.PostWriteRequest;
+import com.shop.preorder.dto.response.CommentWriteResponse;
 import com.shop.preorder.dto.response.PostWriteResponse;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.PostService;
@@ -29,6 +32,15 @@ public class PostController {
 
         Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
         return ResponseDto.success(PostWriteResponse.of(post));
+    }
+
+    @Operation(summary = "댓글 작성")
+    @PostMapping("/{post_id}/write")
+    public ResponseDto<?> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+
+        Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());
+        return ResponseDto.success(CommentWriteResponse.of(comment));
     }
 
     @Operation(summary = "뉴스피드 조회")

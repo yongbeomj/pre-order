@@ -20,7 +20,7 @@ public class PostWriteResponse {
         return new PostWriteResponse(
                 post.getId(),
                 post.getTitle(),
-                post.getWriter().getEmail()
+                post.getUser().getEmail()
         );
     }
 

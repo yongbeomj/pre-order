@@ -42,8 +42,11 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
     private List<Follow> toFollows = new ArrayList<>();
 
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> writers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public User(String email, String password, String name, String profileImage, String greeting) {
