@@ -1,8 +1,12 @@
 package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.CustomUserDetails;
+import com.shop.preorder.domain.Follow;
+import com.shop.preorder.dto.common.ResponseDto;
+import com.shop.preorder.dto.response.FollowResponse;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.FollowService;
+import com.shop.preorder.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +22,15 @@ public class FollowController {
 
     private final CustomUserDetailsService userDetailsService;
     private final FollowService followService;
+    private final NewsfeedService newsfeedService;
 
     @Operation(summary = "팔로우 하기")
     @PostMapping("/{to_user_id}")
-    public ResponseEntity<?> followUser(@PathVariable("to_user_id") Long toUserId, Authentication authentication) {
+    public ResponseDto<FollowResponse> followUser(@PathVariable("to_user_id") Long toUserId, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-        followService.followUser(userDetails.getUser().getId(), toUserId);
-        return ResponseEntity.ok("ok");
+        Follow follow = followService.followUser(userDetails.getUser().getId(), toUserId);
+
+        return ResponseDto.success(FollowResponse.of(follow));
     }
 
     @Operation(summary = "팔로워 찾기")
