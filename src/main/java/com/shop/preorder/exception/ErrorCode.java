@@ -19,6 +19,7 @@ public enum ErrorCode {
 
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, "Duplicated user email"),
     DUPLICATED_POST_LIKE(HttpStatus.CONFLICT, "User already like the post"),
+    DUPLICATED_COMMENT_LIKE(HttpStatus.CONFLICT, "User already like the comment"),
 
 
     ALREADY_USER_FOLLOW(HttpStatus.CONFLICT, "Already user followed"),

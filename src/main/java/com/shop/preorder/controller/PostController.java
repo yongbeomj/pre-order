@@ -1,11 +1,13 @@
 package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.Comment;
+import com.shop.preorder.domain.CommentLike;
 import com.shop.preorder.domain.Post;
 import com.shop.preorder.domain.PostLike;
 import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.request.CommentWriteRequest;
 import com.shop.preorder.dto.request.PostWriteRequest;
+import com.shop.preorder.dto.response.CommentLikeResponse;
 import com.shop.preorder.dto.response.CommentWriteResponse;
 import com.shop.preorder.dto.response.PostLikeResponse;
 import com.shop.preorder.dto.response.PostWriteResponse;
@@ -55,8 +57,15 @@ public class PostController {
 
     }
 
-    @Operation(summary = "게시글별 좋아요 조회")
-    @GetMapping("/like/{post_id}")
-    public void searchLikeByPosts() {
+    @Operation(summary = "댓글 좋아요 추가")
+    @GetMapping("{comment_id}/comment/likes")
+    public ResponseDto<CommentLikeResponse> likeComments(@PathVariable("comment_id") Long commentId, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+
+        CommentLike commentLike = postService.addCommentLike(commentId, userDetails.getUsername());
+        return ResponseDto.success(CommentLikeResponse.of(commentLike));
+
     }
+
+
 }
