@@ -2,12 +2,15 @@ package com.shop.preorder.service;
 
 import com.shop.preorder.domain.Comment;
 import com.shop.preorder.domain.Post;
+import com.shop.preorder.domain.PostLike;
 import com.shop.preorder.domain.User;
 import com.shop.preorder.dto.request.CommentWriteRequest;
 import com.shop.preorder.dto.request.PostWriteRequest;
+import com.shop.preorder.dto.response.PostLikeResponse;
 import com.shop.preorder.exception.BaseException;
 import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.repository.CommentRepository;
+import com.shop.preorder.repository.PostLikeRepository;
 import com.shop.preorder.repository.PostRepository;
 import com.shop.preorder.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final PostLikeRepository postLikeRepository;
 
     // 포스트 작성
     @Transactional
@@ -42,5 +46,26 @@ public class PostService {
                 .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         return commentRepository.save(commentWriteRequest.toEntity(post, writer));
+    }
+
+    @Transactional
+    public PostLike addPostLike(Long postId, String email) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new BaseException(ErrorCode.POST_NOT_FOUND));
+
+        User writer = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+
+        boolean isPostLike = postLikeRepository.existsByPostAndUser(post, writer);
+        if (isPostLike) {
+            throw new BaseException(ErrorCode.DUPLICATED_POST_LIKE);
+        }
+
+        PostLike postLike = PostLike.builder()
+                .post(post)
+                .user(writer)
+                .build();
+
+        return postLikeRepository.save(postLike);
     }
 }

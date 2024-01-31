@@ -18,6 +18,8 @@ public enum ErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not founded"),
 
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, "Duplicated user email"),
+    DUPLICATED_POST_LIKE(HttpStatus.CONFLICT, "User already like the post"),
+
 
     ALREADY_USER_FOLLOW(HttpStatus.CONFLICT, "Already user followed"),
 

@@ -2,10 +2,12 @@ package com.shop.preorder.controller;
 
 import com.shop.preorder.domain.Comment;
 import com.shop.preorder.domain.Post;
+import com.shop.preorder.domain.PostLike;
 import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.request.CommentWriteRequest;
 import com.shop.preorder.dto.request.PostWriteRequest;
 import com.shop.preorder.dto.response.CommentWriteResponse;
+import com.shop.preorder.dto.response.PostLikeResponse;
 import com.shop.preorder.dto.response.PostWriteResponse;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.PostService;
@@ -43,14 +45,14 @@ public class PostController {
         return ResponseDto.success(CommentWriteResponse.of(comment));
     }
 
-    @Operation(summary = "뉴스피드 조회")
-    @GetMapping("/newsfeed/{user_id}")
-    public void searchNewsfeed() {
-    }
+    @Operation(summary = "게시글 좋아요 추가")
+    @GetMapping("{post_id}/likes")
+    public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
 
-    @Operation(summary = "게시글 좋아요 생성")
-    @PostMapping("/like/add")
-    public void likePosts() {
+        PostLike postLike = postService.addPostLike(postId, userDetails.getUsername());
+        return ResponseDto.success(PostLikeResponse.of(postLike));
+
     }
 
     @Operation(summary = "게시글별 좋아요 조회")
