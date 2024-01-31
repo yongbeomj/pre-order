@@ -2,6 +2,8 @@ package com.shop.preorder.service;
 
 import com.shop.preorder.domain.Follow;
 import com.shop.preorder.domain.User;
+import com.shop.preorder.exception.BaseException;
+import com.shop.preorder.exception.ErrorCode;
 import com.shop.preorder.repository.FollowRepository;
 import com.shop.preorder.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class FollowService {
 
         // validation
         followRepository.findByFromUserAndToUser(fromUser, toUser).ifPresent(it -> {
-            throw new IllegalArgumentException("이미 해당 사용자를 팔로우하고 있습니다.");
+            throw new BaseException(ErrorCode.ALREADY_USER_FOLLOW);
         });
 
         Follow follow = Follow.builder()

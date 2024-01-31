@@ -1,6 +1,7 @@
 package com.shop.preorder.config;
 
 import com.shop.preorder.config.filter.JwtTokenFilter;
+import com.shop.preorder.exception.CustomAuthenticationEntryPoint;
 import com.shop.preorder.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,9 @@ public class AuthenticationConfig {
                 // 세션 미사용
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling((exceptionConfig)->
+                        exceptionConfig.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
                 .addFilterBefore(new JwtTokenFilter(userDetailsService, secretKey), UsernamePasswordAuthenticationFilter.class);
 
