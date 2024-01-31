@@ -1,14 +1,11 @@
 package com.shop.preorder.service;
 
+import com.shop.preorder.domain.Token;
 import com.shop.preorder.domain.User;
-import com.shop.preorder.dto.common.ErrorResponse;
-import com.shop.preorder.dto.common.ResponseDto;
-import com.shop.preorder.dto.request.UserJoinRequest;
-import com.shop.preorder.dto.request.UserLoginRequest;
-import com.shop.preorder.dto.request.UserModifyRequest;
-import com.shop.preorder.dto.request.UserPwModifyRequest;
+import com.shop.preorder.dto.request.*;
 import com.shop.preorder.exception.BaseException;
 import com.shop.preorder.exception.ErrorCode;
+import com.shop.preorder.repository.TokenRepository;
 import com.shop.preorder.repository.UserRepository;
 import com.shop.preorder.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +20,14 @@ import org.springframework.util.StringUtils;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration-in-second}")
-    private Long expiredTimeMs;
+    @Value("${jwt.access-token.expiration}")
+    private Long expiration;
 
     // 회원가입
     @Transactional
@@ -63,7 +61,10 @@ public class UserService {
 //            throw new BaseException(ErrorCode.INVALID_PASSWORD);
 //        }
 
-        return JwtTokenUtil.createToken(userLoginRequest.getEmail(), secretKey, expiredTimeMs);
+        String token = JwtTokenUtil.createToken(userLoginRequest.getEmail(), secretKey, expiration);
+        tokenRepository.save(new TokenRequest(token, false).toEntity());
+
+        return token;
     }
 
     // 프로필 수정
@@ -110,7 +111,21 @@ public class UserService {
     }
 
     // 로그아웃
-    public void logout(String token) {
+    @Transactional
+    public Token logout(String token) {
+        Token findToken = tokenRepository.findByToken(token)
+                .orElseThrow(() -> new BaseException(ErrorCode.INVALID_TOKEN));
+
+        // blacklist에서 만료 여부 체크
+        boolean isExpiredValid = tokenRepository.findByToken(token).map(Token::isExpired).orElse(false);
+        if (isExpiredValid) {
+            throw new BaseException(ErrorCode.INVALID_TOKEN);
+        }
+
+        // blacklist 만료 여부 true로 변경
+        findToken.setExpired(true);
+
+        return tokenRepository.saveAndFlush(findToken);
     }
 
 

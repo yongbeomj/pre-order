@@ -14,7 +14,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-#        show_sql: true
+        #        show_sql: true
         format_sql: true
 
   mail:
@@ -45,4 +45,7 @@ logging:
 jwt:
   header: Authorization
   secret: asdDfas89123askdklAJSdvnakldeiqsa52135azdwv
-  expiration-in-second: 86400000
+  access-token:
+    expiration: 1800000 # 30분
+  refresh-token:
+    expiration: 604800000 # 7일
