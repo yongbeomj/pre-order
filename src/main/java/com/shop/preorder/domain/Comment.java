@@ -3,6 +3,9 @@ package com.shop.preorder.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(name = "comments")
 @Entity
 @Getter
@@ -22,6 +25,9 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<CommentLike> commentLikes = new ArrayList<>();
 
     @Builder
     public Comment(String contents, Post post, User user) {
