@@ -13,11 +13,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<?> errorHandler(BaseException e) {
-        log.error(e.getMessage());
-
-        return ResponseEntity
-                .status(e.getErrorCode().getHttpStatus())
+        log.error("Error occurs {}", e.toString());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
                 .body(ResponseDto.error(ErrorResponse.of(e.getErrorCode())));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> databaseErrorHandler(IllegalArgumentException e) {
+        log.error("Error occurs {}", e.toString());
+        return ResponseEntity.status(ErrorCode.DATABASE_ERROR.getHttpStatus())
+                .body(ResponseDto.error(ErrorResponse.of(ErrorCode.DATABASE_ERROR)));
     }
 
 }
