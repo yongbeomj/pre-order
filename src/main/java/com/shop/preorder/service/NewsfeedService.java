@@ -1,18 +1,13 @@
 package com.shop.preorder.service;
 
-import com.shop.preorder.domain.Follow;
-import com.shop.preorder.domain.Newsfeed;
-import com.shop.preorder.domain.NewsfeedType;
-import com.shop.preorder.domain.User;
-import com.shop.preorder.exception.BaseException;
-import com.shop.preorder.exception.ErrorCode;
-import com.shop.preorder.repository.FollowRepository;
-import com.shop.preorder.repository.NewsfeedRepository;
-import com.shop.preorder.repository.UserRepository;
+import com.shop.preorder.domain.*;
+import com.shop.preorder.dto.response.*;
+import com.shop.preorder.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +17,10 @@ public class NewsfeedService {
     private final NewsfeedRepository newsfeedRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
+    private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     // 뉴스피드 생성 (저장)
     public void createNewsfeed(Long activityUserId, Long targetUserId, Long targetId, NewsfeedType newsfeedType) {
@@ -47,6 +46,45 @@ public class NewsfeedService {
                 .flatMap(toUser -> newsfeedRepository.findAllByActivityUserId(toUser.getId()).stream()
                         .sorted(Comparator.comparing(Newsfeed::getCreatedAt).reversed()))
                 .collect(Collectors.toList());
+    }
+
+    // 뉴스피드 타입에 따른 세부 데이터
+    public NewsfeedResponse newsfeedDetails(Newsfeed newsfeed, Long currentUserId) {
+        Object newsfeedResult = null;
+        switch (newsfeed.getNewsfeedType()) {
+            case FOLLOW:
+                Follow findFollow = followRepository.findById(newsfeed.getTargetId()).orElse(null);
+                if (findFollow != null) {
+                    newsfeedResult = FollowResponse.of(findFollow);
+                }
+                break;
+            case POST:
+                Post findPost = postRepository.findById(newsfeed.getTargetId()).orElse(null);
+                if (findPost != null) {
+                    newsfeedResult = PostWriteResponse.of(findPost);
+                }
+                break;
+            case POST_LIKE:
+                PostLike findPostLike = postLikeRepository.findById(newsfeed.getTargetId()).orElse(null);
+                if (findPostLike != null) {
+                    newsfeedResult = PostLikeResponse.of(findPostLike);
+                }
+                break;
+            case COMMENT:
+                Comment findComment = commentRepository.findById(newsfeed.getTargetId()).orElse(null);
+                if (findComment != null) {
+                    newsfeedResult = CommentWriteResponse.of(findComment);
+                }
+                break;
+            case COMMENT_LIKE:
+                CommentLike findCommentLike = commentLikeRepository.findById(newsfeed.getTargetId()).orElse(null);
+                if (findCommentLike != null) {
+                    newsfeedResult = CommentLikeResponse.of(findCommentLike);
+                }
+                break;
+        }
+
+        return (newsfeedResult != null) ? NewsfeedResponse.of(newsfeed, currentUserId, newsfeedResult) : null;
     }
 
 }

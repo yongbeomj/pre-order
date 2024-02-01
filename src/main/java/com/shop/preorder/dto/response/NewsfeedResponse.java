@@ -1,32 +1,30 @@
 package com.shop.preorder.dto.response;
 
-import com.shop.preorder.domain.Follow;
 import com.shop.preorder.domain.Newsfeed;
 import com.shop.preorder.domain.NewsfeedType;
-import com.shop.preorder.domain.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewsfeedResponse {
 
+    private Long currentUserId; // 로그인 유저
     private Long activityUserId;
     private String activityUserName;
-    private Long targetUserId; // 팔로우 id
-    private String targetUserName; // 팔로우 유저 이름
+    private Long targetUserId;
+    private String targetUserName;
     private NewsfeedType newsfeedType;
     private LocalDateTime createdAt;
     private Object content;
 
-    public static NewsfeedResponse of(Newsfeed newsfeed, Object content) {
+    public static NewsfeedResponse of(Newsfeed newsfeed, Long currentUserId, Object content) {
         return new NewsfeedResponse(
+                currentUserId,
                 newsfeed.getActivityUser().getId(),
                 newsfeed.getActivityUser().getName(),
                 newsfeed.getTargetUser().getId(),
