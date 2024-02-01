@@ -114,8 +114,10 @@ public class UserController {
 
         // 인증 정보로 유저 정보 추출
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
         User updateUser = userService.modifyPassword(userPwModifyRequest, userDetails.getUsername());
+
+        // 모든 기기에서 로그아웃
+        userService.allLogout(userDetails.getUsername());
         return ResponseEntity.ok(UserPwModifyResponse.of(updateUser));
     }
 
