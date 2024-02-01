@@ -1,5 +1,6 @@
 package com.shop.preorder.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,17 +16,24 @@ public class Newsfeed extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User activityUser; // 로그인 유저 id (활동 유저)
 
-    private Long activityId; // 유저 활동 데이터 pk
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User targetUser; // 대상 유저 id
+
+    private Long targetId; // 활동 데이터 pk
 
     @Enumerated(EnumType.STRING)
-    private NewsfeedType newsfeedType;
+    private NewsfeedType newsfeedType; // 뉴스피드 타입
 
     @Builder
-    public Newsfeed(Long userId, Long activityId, NewsfeedType newsfeedType) {
-        this.userId = userId;
-        this.activityId = activityId;
+    public Newsfeed(User activityUser, User targetUser, Long targetId, NewsfeedType newsfeedType) {
+        this.activityUser = activityUser;
+        this.targetUser = targetUser;
+        this.targetId = targetId;
         this.newsfeedType = newsfeedType;
     }
 }
