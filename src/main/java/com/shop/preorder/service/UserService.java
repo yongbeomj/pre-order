@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -62,7 +64,7 @@ public class UserService {
 //        }
 
         String token = JwtTokenUtil.createToken(userLoginRequest.getEmail(), secretKey, expiration);
-        tokenRepository.save(new TokenRequest(token, false).toEntity());
+        tokenRepository.save(new TokenRequest(token, userLoginRequest.getEmail(), false).toEntity());
 
         return token;
     }
@@ -126,6 +128,17 @@ public class UserService {
         findToken.setExpired(true);
 
         return tokenRepository.saveAndFlush(findToken);
+    }
+
+    public void allLogout(String email) {
+        List<Token> findUsers = tokenRepository.findAllByEmail(email);
+
+        if (!findUsers.isEmpty()) {
+            findUsers.forEach(it->{
+                it.setExpired(true);
+            });
+            tokenRepository.saveAll(findUsers);
+        }
     }
 
 

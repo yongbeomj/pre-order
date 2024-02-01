@@ -85,6 +85,15 @@ public class UserController {
         return ResponseDto.success(TokenResponse.of(userDetails.getUsername()));
     }
 
+    @Operation(summary = "모든 기기에서 로그아웃")
+    @GetMapping("/all-logout")
+    public ResponseDto<TokenResponse> allDevicelogout(HttpServletRequest request, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+        userService.allLogout(userDetails.getUsername());
+
+        return ResponseDto.success(TokenResponse.of(userDetails.getUsername()));
+    }
+
 
     @Operation(summary = "회원정보 수정")
     @PutMapping("/modify")

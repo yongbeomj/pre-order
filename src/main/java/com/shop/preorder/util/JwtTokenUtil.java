@@ -1,13 +1,11 @@
 package com.shop.preorder.util;
 
-import com.shop.preorder.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -20,11 +18,11 @@ public class JwtTokenUtil {
     // Token 생성
     public static String createToken(String email, String key, long expireTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("userName", email);
+        claims.put("email", email);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
                 .signWith(getKey(key), SignatureAlgorithm.HS256)
                 .compact();
@@ -46,7 +44,7 @@ public class JwtTokenUtil {
     }
 
     public static String getUserName(String token, String key) {
-        return extractClaims(token, key).get("userName", String.class);
+        return extractClaims(token, key).get("email", String.class);
     }
 
     // token 만료 여부 체크 (true : 만료, false : 활성)
