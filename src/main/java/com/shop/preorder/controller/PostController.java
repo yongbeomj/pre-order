@@ -36,7 +36,7 @@ public class PostController {
         Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), post.getId(), NewsfeedType.POST);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), post.getUser().getId(), post.getId(), NewsfeedType.POST);
 
         return ResponseDto.success(PostWriteResponse.of(post));
     }
@@ -49,7 +49,7 @@ public class PostController {
         Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), comment.getId(), NewsfeedType.COMMENT);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), comment.getUser().getId(), comment.getId(), NewsfeedType.COMMENT);
 
         return ResponseDto.success(CommentWriteResponse.of(comment));
     }
@@ -62,7 +62,7 @@ public class PostController {
         PostLike postLike = postService.addPostLike(postId, userDetails.getUsername());
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), postLike.getId(), NewsfeedType.POST_LIKE);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), postLike.getUser().getId(), postLike.getId(), NewsfeedType.POST_LIKE);
 
         return ResponseDto.success(PostLikeResponse.of(postLike));
     }
@@ -75,7 +75,7 @@ public class PostController {
         CommentLike commentLike = postService.addCommentLike(commentId, userDetails.getUsername());
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), commentLike.getId(), NewsfeedType.COMMENT_LIKE);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), commentLike.getUser().getId(), commentLike.getId(), NewsfeedType.COMMENT_LIKE);
 
         return ResponseDto.success(CommentLikeResponse.of(commentLike));
     }

@@ -32,7 +32,7 @@ public class FollowController {
         Follow follow = followService.followUser(userDetails.getUser().getId(), toUserId);
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), follow.getId(), NewsfeedType.FOLLOW);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), follow.getToUser().getId(), follow.getId(), NewsfeedType.FOLLOW);
 
         return ResponseDto.success(FollowResponse.of(follow));
     }
