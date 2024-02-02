@@ -97,17 +97,16 @@ public class UserController {
 
     @Operation(summary = "회원정보 수정")
     @PutMapping("/modify")
-    public ResponseEntity<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication) {
-        // 인증 정보로 유저 정보 추출
+    public ResponseDto<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
         User updateUser = userService.modifyProfile(userModifyRequest, userDetails.getUsername());
-        return ResponseEntity.ok(UserModifyResponse.of(updateUser));
+
+        return ResponseDto.success(UserModifyResponse.of(updateUser));
     }
 
     @Operation(summary = "회원 비밀번호 수정")
     @PutMapping("/pw-modify")
-    public ResponseEntity<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
+    public ResponseDto<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
         if (result.hasErrors()) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
@@ -118,7 +117,7 @@ public class UserController {
 
         // 모든 기기에서 로그아웃
         userService.allLogout(userDetails.getUsername());
-        return ResponseEntity.ok(UserPwModifyResponse.of(updateUser));
+        return ResponseDto.success(UserPwModifyResponse.of(updateUser));
     }
 
 }

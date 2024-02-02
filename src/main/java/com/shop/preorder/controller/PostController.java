@@ -30,7 +30,7 @@ public class PostController {
 
     @Operation(summary = "게시글 쓰기")
     @PostMapping("/write")
-    public ResponseDto<?> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
+    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
 
         Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
