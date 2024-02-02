@@ -67,7 +67,7 @@ public class PostService {
     @Transactional
     public CommentLike addCommentLike(Long commentId, String email) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BaseException(ErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new BaseException(ErrorCode.COMMENT_NOT_FOUND));
 
         User writer = userRepository.findByEmail(email)
                 .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
