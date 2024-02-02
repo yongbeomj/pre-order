@@ -2,7 +2,7 @@
 version: '3.1'
 
 services:
-  db:
+  mysql:
     image: mysql
     command: --default-authentication-plugin=caching_sha2_password
     restart: always
@@ -16,3 +16,9 @@ services:
       - ./db_data:/var/lib/mysql
     ports:
       - "3306:3306"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8090:8080"
