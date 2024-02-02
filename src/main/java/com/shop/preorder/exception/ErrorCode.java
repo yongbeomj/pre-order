@@ -16,14 +16,14 @@ public enum ErrorCode {
     INVALID_AUTH_CODE(HttpStatus.UNAUTHORIZED, "Invalid email authentication code"),
 
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not founded"),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not founded"),
 
     DUPLICATED_USER_EMAIL(HttpStatus.CONFLICT, "Duplicated user email"),
     DUPLICATED_POST_LIKE(HttpStatus.CONFLICT, "User already like the post"),
     DUPLICATED_COMMENT_LIKE(HttpStatus.CONFLICT, "User already like the comment"),
 
-
     ALREADY_USER_FOLLOW(HttpStatus.CONFLICT, "Already user followed"),
-
+    NOT_FOLLOW_ME(HttpStatus.BAD_REQUEST, "Users can't follow themselves"),
 
 
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "개발팀에 문의해주세요. (Database Error)"),

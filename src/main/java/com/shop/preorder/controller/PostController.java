@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Posts")
@@ -30,9 +29,9 @@ public class PostController {
 
     @Operation(summary = "게시글 쓰기")
     @PostMapping("/write")
-    public ResponseDto<?> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
+    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
+        
         Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
 
         // 뉴스피드 생성
@@ -42,8 +41,8 @@ public class PostController {
     }
 
     @Operation(summary = "댓글 작성")
-    @PostMapping("/{post_id}/write")
-    public ResponseDto<?> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
+    @PostMapping("/{post_id}/comment")
+    public ResponseDto<CommentWriteResponse> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
 
         Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());

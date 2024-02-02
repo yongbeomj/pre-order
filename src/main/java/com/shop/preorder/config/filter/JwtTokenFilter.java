@@ -1,5 +1,7 @@
 package com.shop.preorder.config.filter;
 
+import com.shop.preorder.domain.Token;
+import com.shop.preorder.repository.TokenRepository;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
@@ -21,8 +23,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final CustomUserDetailsService userDetailsService;
     private final String secretKey;
+    private final CustomUserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +38,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         try {
             String token = header.split(" ")[1].trim();
-            if (JwtTokenUtil.isTokenExpired(token, secretKey)) {
+            boolean isBlackListExpired = tokenRepository.findByToken(token).map(Token::isExpired).orElse(false);
+            if (JwtTokenUtil.isTokenExpired(token, secretKey) || isBlackListExpired) {
                 filterChain.doFilter(request, response);
                 return;
             }

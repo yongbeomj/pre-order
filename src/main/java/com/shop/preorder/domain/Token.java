@@ -16,11 +16,13 @@ public class Token extends BaseTimeEntity {
     private Long id;
 
     private String token;
+    private String email;
     private boolean expired;
 
     @Builder
-    public Token(String token, boolean expired) {
+    public Token(String token, String email, boolean expired) {
         this.token = token;
+        this.email = email;
         this.expired = expired;
     }
 }

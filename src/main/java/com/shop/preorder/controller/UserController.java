@@ -11,13 +11,11 @@ import com.shop.preorder.service.MailService;
 import com.shop.preorder.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
@@ -85,29 +83,39 @@ public class UserController {
         return ResponseDto.success(TokenResponse.of(userDetails.getUsername()));
     }
 
+    @Operation(summary = "모든 기기에서 로그아웃")
+    @GetMapping("/all-logout")
+    public ResponseDto<TokenResponse> allDevicelogout(HttpServletRequest request, Authentication authentication) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+        userService.allLogout(userDetails.getUsername());
+
+        return ResponseDto.success(TokenResponse.of(userDetails.getUsername()));
+    }
+
 
     @Operation(summary = "회원정보 수정")
     @PutMapping("/modify")
-    public ResponseEntity<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication) {
-        // 인증 정보로 유저 정보 추출
+    public ResponseDto<UserModifyResponse> modifyProfile(@RequestBody UserModifyRequest userModifyRequest, Authentication authentication) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
         User updateUser = userService.modifyProfile(userModifyRequest, userDetails.getUsername());
-        return ResponseEntity.ok(UserModifyResponse.of(updateUser));
+
+        return ResponseDto.success(UserModifyResponse.of(updateUser));
     }
 
     @Operation(summary = "회원 비밀번호 수정")
     @PutMapping("/pw-modify")
-    public ResponseEntity<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
+    public ResponseDto<UserPwModifyResponse> modifyPassword(@Valid @RequestBody UserPwModifyRequest userPwModifyRequest, Authentication authentication, BindingResult result) {
         if (result.hasErrors()) {
             throw new BaseException(ErrorCode.INVALID_REQUEST);
         }
 
         // 인증 정보로 유저 정보 추출
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
         User updateUser = userService.modifyPassword(userPwModifyRequest, userDetails.getUsername());
-        return ResponseEntity.ok(UserPwModifyResponse.of(updateUser));
+
+        // 모든 기기에서 로그아웃
+        userService.allLogout(userDetails.getUsername());
+        return ResponseDto.success(UserPwModifyResponse.of(updateUser));
     }
 
 }

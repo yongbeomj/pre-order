@@ -2,6 +2,7 @@ package com.shop.preorder.config;
 
 import com.shop.preorder.config.filter.JwtTokenFilter;
 import com.shop.preorder.exception.CustomAuthenticationEntryPoint;
+import com.shop.preorder.repository.TokenRepository;
 import com.shop.preorder.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class AuthenticationConfig {
 
-    private final CustomUserDetailsService userDetailsService;
-
     @Value("${jwt.secret}")
     private String secretKey;
+    private final CustomUserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,10 +39,10 @@ public class AuthenticationConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .exceptionHandling((exceptionConfig)->
+                .exceptionHandling((exceptionConfig) ->
                         exceptionConfig.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
-                .addFilterBefore(new JwtTokenFilter(userDetailsService, secretKey), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtTokenFilter(secretKey, userDetailsService, tokenRepository), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
