@@ -42,8 +42,8 @@ public class PostController {
     }
 
     @Operation(summary = "댓글 작성")
-    @PostMapping("/{post_id}/write")
-    public ResponseDto<?> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
+    @PostMapping("/{post_id}/comment")
+    public ResponseDto<CommentWriteResponse> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
 
         Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());
