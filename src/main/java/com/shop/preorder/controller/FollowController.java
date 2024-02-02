@@ -44,9 +44,4 @@ public class FollowController {
         return ResponseDto.success(FollowResponse.of(follow));
     }
 
-    @Operation(summary = "팔로워 찾기")
-    @GetMapping("/find-follower/{user_id}")
-    public void findFollower() {
-    }
-
 }
