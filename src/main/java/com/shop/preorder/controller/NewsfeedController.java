@@ -6,6 +6,7 @@ import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.response.NewsfeedResponse;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.NewsfeedService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ public class NewsfeedController {
     private final CustomUserDetailsService userDetailsService;
     private final NewsfeedService newsfeedService;
 
-
+    @Operation(summary = "뉴스피드 조회")
     @GetMapping("/me")
     public ResponseDto<List<NewsfeedResponse>> searchNewsfeed(Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
