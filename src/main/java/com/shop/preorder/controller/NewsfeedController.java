@@ -4,7 +4,6 @@ import com.shop.preorder.domain.CustomUserDetails;
 import com.shop.preorder.domain.Newsfeed;
 import com.shop.preorder.dto.common.ResponseDto;
 import com.shop.preorder.dto.response.NewsfeedResponse;
-import com.shop.preorder.repository.*;
 import com.shop.preorder.service.CustomUserDetailsService;
 import com.shop.preorder.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,11 +25,6 @@ public class NewsfeedController {
 
     private final CustomUserDetailsService userDetailsService;
     private final NewsfeedService newsfeedService;
-    private final FollowRepository followRepository;
-    private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
-    private final CommentRepository commentRepository;
-    private final CommentLikeRepository commentLikeRepository;
 
 
     @GetMapping("/me")
