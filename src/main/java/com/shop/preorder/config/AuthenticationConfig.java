@@ -30,7 +30,7 @@ public class AuthenticationConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/users/join/**").permitAll()
                         .requestMatchers("/api/users/login").permitAll()
                         .anyRequest().authenticated()
