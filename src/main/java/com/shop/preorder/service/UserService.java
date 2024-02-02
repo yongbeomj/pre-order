@@ -59,9 +59,9 @@ public class UserService {
                 .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
         // 비밀번호 체크
-//        if (!passwordEncoder.matches(userLoginRequest.getPassword(), savedUser.getPassword())) {
-//            throw new BaseException(ErrorCode.INVALID_PASSWORD);
-//        }
+        if (!passwordEncoder.matches(userLoginRequest.getPassword(), savedUser.getPassword())) {
+            throw new BaseException(ErrorCode.INVALID_PASSWORD);
+        }
 
         String token = JwtTokenUtil.createToken(userLoginRequest.getEmail(), secretKey, expiration);
         tokenRepository.save(new TokenRequest(token, userLoginRequest.getEmail(), false).toEntity());
