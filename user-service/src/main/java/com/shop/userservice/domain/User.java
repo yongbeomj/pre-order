@@ -3,9 +3,6 @@ package com.shop.userservice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Table(name = "users")
 @Entity
 @Getter
@@ -36,37 +33,13 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
-    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
-    private List<Follow> fromFollows = new ArrayList<>();
-
-    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL)
-    private List<Follow> toFollows = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Post> writers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<PostLike> postLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<CommentLike> commentLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "activityUser")
-    private List<Newsfeed> activityNewsfeeds = new ArrayList<>();
-
-    @OneToMany(mappedBy = "targetUser")
-    private List<Newsfeed> targetNewsfeeds = new ArrayList<>();
-
     @Builder
-    public User(String email, String password, String name, String profileImage, String greeting) {
+    public User(String email, String password, String name, String profileImage, String greeting, UserRole role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.profileImage = profileImage;
         this.greeting = greeting;
+        this.role = role;
     }
-
 }
