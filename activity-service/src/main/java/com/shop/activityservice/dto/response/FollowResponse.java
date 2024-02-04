@@ -17,8 +17,8 @@ public class FollowResponse {
     public static FollowResponse of(Follow follow) {
         return new FollowResponse(
                 follow.getId(),
-                follow.getFromUser().getId(),
-                follow.getToUser().getId()
+                follow.getFromUserId(),
+                follow.getToUserId()
         );
     }
 }

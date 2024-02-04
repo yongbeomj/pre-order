@@ -1,11 +1,9 @@
 package com.shop.activityservice.service;
 
 import com.shop.activityservice.domain.Follow;
-import com.shop.activityservice.domain.User;
 import com.shop.activityservice.exception.BaseException;
 import com.shop.activityservice.exception.ErrorCode;
 import com.shop.activityservice.repository.FollowRepository;
-import com.shop.activityservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,22 +12,23 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FollowService {
 
-    private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
     @Transactional
     public Follow followUser(Long fromUserid, Long toUserId) {
-        User fromUser = userRepository.findById(fromUserid).orElseThrow();
-        User toUser = userRepository.findById(toUserId).orElseThrow();
+        // 본인 팔로우 하는 경우 체크
+        if (fromUserid == toUserId) {
+            throw new BaseException(ErrorCode.NOT_FOLLOW_ME);
+        }
 
-        // validation
-        followRepository.findByFromUserAndToUser(fromUser, toUser).ifPresent(it -> {
+        // 팔로우 중복 체크
+        followRepository.findByFromUserIdAndToUserId(fromUserid, toUserId).ifPresent(it -> {
             throw new BaseException(ErrorCode.ALREADY_USER_FOLLOW);
         });
 
         Follow follow = Follow.builder()
-                .fromUser(fromUser)
-                .toUser(toUser)
+                .fromUserId(fromUserid)
+                .toUserId(toUserId)
                 .build();
 
         return followRepository.save(follow);

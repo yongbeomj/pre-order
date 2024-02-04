@@ -1,19 +1,12 @@
 package com.shop.activityservice.controller;
 
-import com.shop.activityservice.domain.CustomUserDetails;
 import com.shop.activityservice.domain.Follow;
-import com.shop.activityservice.domain.NewsfeedType;
 import com.shop.activityservice.dto.common.ResponseDto;
 import com.shop.activityservice.dto.response.FollowResponse;
-import com.shop.activityservice.exception.BaseException;
-import com.shop.activityservice.exception.ErrorCode;
-import com.shop.activityservice.service.CustomUserDetailsService;
 import com.shop.activityservice.service.FollowService;
-import com.shop.activityservice.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,24 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FollowController {
 
-    private final CustomUserDetailsService userDetailsService;
     private final FollowService followService;
-    private final NewsfeedService newsfeedService;
 
     @Operation(summary = "팔로우 하기")
     @PostMapping("/{to_user_id}")
-    public ResponseDto<FollowResponse> followUser(@PathVariable("to_user_id") Long toUserId, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+    public ResponseDto<FollowResponse> followUser(@PathVariable("to_user_id") Long toUserId) {
+        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        // 본인 팔로우 시 예외처리
-        if (userDetails.getUser().getId() == toUserId) {
-            throw new BaseException(ErrorCode.NOT_FOLLOW_ME);
-        }
+        // TODO : 로그인 유저(fromUserId) 정보 가져오기 (유저 서비스)
+        Long fromUserId = null;
+        Follow follow = followService.followUser(null, toUserId);
 
-        Follow follow = followService.followUser(userDetails.getUser().getId(), toUserId);
-
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), follow.getToUser().getId(), follow.getId(), NewsfeedType.FOLLOW);
+        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
 
         return ResponseDto.success(FollowResponse.of(follow));
     }
