@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NewsfeedResponse {
 
-    private Long currentUserId; // 로그인 유저
+    private Long loginUserId; // 로그인 유저
     private Long activityUserId;
     private String activityUserName;
     private Long targetUserId;
@@ -23,13 +23,13 @@ public class NewsfeedResponse {
     private LocalDateTime createdAt;
     private Object content;
 
-    public static NewsfeedResponse of(Newsfeed newsfeed, Long currentUserId, Object content) {
+    public static NewsfeedResponse of(Newsfeed newsfeed, Long loginUserId, Object content) {
         return new NewsfeedResponse(
-                currentUserId,
-                newsfeed.getActivityUser().getId(),
-                newsfeed.getActivityUser().getName(),
-                newsfeed.getTargetUser().getId(),
-                newsfeed.getTargetUser().getName(),
+                loginUserId,
+                newsfeed.getActivityUserId(),
+                null,
+                newsfeed.getTargetUserId(),
+                null,
                 newsfeed.getNewsfeedType(),
                 newsfeed.getCreatedAt(),
                 content
