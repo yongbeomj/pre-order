@@ -32,7 +32,7 @@ public class PostService {
                 .orElseThrow(() -> new BaseException(ErrorCode.POST_NOT_FOUND));
 
         // 동일 포스트 좋아요 중복 여부 체크
-        boolean isPostLike = postLikeRepository.existsByPostAndUserId(postId, userId);
+        boolean isPostLike = postLikeRepository.existsByPostIdAndUserId(postId, userId);
         if (isPostLike) {
             throw new BaseException(ErrorCode.DUPLICATED_POST_LIKE);
         }

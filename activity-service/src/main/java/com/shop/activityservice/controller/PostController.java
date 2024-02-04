@@ -25,7 +25,7 @@ public class PostController {
     public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest) {
         // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        // TODO : 로그인 유저(fromUserId) 정보 가져오기 (유저 서비스)
+        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
 
         Post post = postService.writePost(postWriteRequest, null);
 
@@ -35,11 +35,11 @@ public class PostController {
     }
 
     @Operation(summary = "포스트 좋아요")
-    @GetMapping("likes/{post_id}")
+    @GetMapping("/likes/{post_id}")
     public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId) {
         // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        // TODO : 로그인 유저(fromUserId) 정보 가져오기 (유저 서비스)
+        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
 
         PostLike postLike = postService.addPostLike(postId, null);
 
