@@ -1,11 +1,12 @@
 package com.shop.activityservice.service;
 
-import com.shop.activityservice.domain.*;
-import com.shop.activityservice.dto.request.CommentWriteRequest;
+import com.shop.activityservice.domain.Post;
+import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.request.PostWriteRequest;
 import com.shop.activityservice.exception.BaseException;
 import com.shop.activityservice.exception.ErrorCode;
-import com.shop.activityservice.repository.*;
+import com.shop.activityservice.repository.PostLikeRepository;
+import com.shop.activityservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ public class PostService {
     // 포스트 작성
     @Transactional
     public Post writePost(PostWriteRequest postWriteRequest, Long userId) {
-        return postRepository.save(postWriteRequest.toEntity(Long userId));
+        return postRepository.save(postWriteRequest.toEntity(userId));
     }
 
     // 포스트 좋아요
