@@ -1,6 +1,9 @@
 package com.shop.activityservice.controller;
 
-import com.shop.activityservice.domain.*;
+import com.shop.activityservice.domain.Comment;
+import com.shop.activityservice.domain.CommentLike;
+import com.shop.activityservice.domain.Post;
+import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.common.ResponseDto;
 import com.shop.activityservice.dto.request.CommentWriteRequest;
 import com.shop.activityservice.dto.request.PostWriteRequest;
@@ -19,23 +22,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
-public class PostController {
+public class CommentController {
 
-    private final CustomUserDetailsService userDetailsService;
     private final PostService postService;
-    private final NewsfeedService newsfeedService;
 
-    @Operation(summary = "게시글 쓰기")
-    @PostMapping("/write")
-    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
+    @Operation(summary = "댓글 작성")
+    @PostMapping("/{post_id}/comment")
+    public ResponseDto<CommentWriteResponse> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
         CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-        
-        Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
+
+        Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());
 
         // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), post.getUser().getId(), post.getId(), NewsfeedType.POST);
+        newsfeedService.createNewsfeed(userDetails.getUser().getId(), comment.getUser().getId(), comment.getId(), NewsfeedType.COMMENT);
 
-        return ResponseDto.success(PostWriteResponse.of(post));
+        return ResponseDto.success(CommentWriteResponse.of(comment));
     }
 
     @Operation(summary = "게시글 좋아요 추가")
