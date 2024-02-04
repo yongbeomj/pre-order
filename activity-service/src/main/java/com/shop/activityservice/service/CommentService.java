@@ -28,14 +28,12 @@ public class CommentService {
 
     // 댓글 작성
     @Transactional
-    public Comment writeComment(CommentWriteRequest commentWriteRequest, Long postId, String email) {
+    public Comment writeComment(CommentWriteRequest commentWriteRequest, Long postId, Long userId) {
+        // 포스트 존재 여부 체크
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BaseException(ErrorCode.POST_NOT_FOUND));
 
-        User writer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-
-        return commentRepository.save(commentWriteRequest.toEntity(post, writer));
+        return commentRepository.save(commentWriteRequest.toEntity(post, userId));
     }
 
     @Transactional

@@ -23,16 +23,15 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<CommentLike> commentLikes = new ArrayList<>();
 
     @Builder
-    public Comment(String contents, Post post, User user) {
+    public Comment(String contents, Post post, Long userId) {
         this.contents = contents;
         this.post = post;
-        this.user = user;
+        this.userId = userId;
     }
 }
