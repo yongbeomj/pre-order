@@ -18,7 +18,7 @@ public class PostLikeResponse {
         return new PostLikeResponse(
                 postLike.getId(),
                 postLike.getPost().getId(),
-                postLike.getUser().getId()
+                postLike.getUserId()
         );
     }
 }

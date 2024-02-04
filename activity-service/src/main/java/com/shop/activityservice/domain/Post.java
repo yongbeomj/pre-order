@@ -19,10 +19,10 @@ public class Post extends BaseTimeEntity {
     private Long id;
 
     private String title;
+
     private String contents;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -31,9 +31,9 @@ public class Post extends BaseTimeEntity {
     private List<PostLike> postLikes = new ArrayList<>();
 
     @Builder
-    public Post(String title, String contents, User user) {
+    public Post(String title, String contents, Long userId) {
         this.title = title;
         this.contents = contents;
-        this.user = user;
+        this.userId = userId;
     }
 }

@@ -2,23 +2,20 @@ package com.shop.activityservice.dto.request;
 
 import com.shop.activityservice.domain.Comment;
 import com.shop.activityservice.domain.Post;
-import com.shop.activityservice.domain.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CommentWriteRequest {
 
     private String contents;
 
-    public Comment toEntity(Post post, User user) {
+    public Comment toEntity(Post post, Long userId) {
         return Comment.builder()
                 .contents(this.contents)
                 .post(post)
-                .user(user)
+                .userId(userId)
                 .build();
     }
 

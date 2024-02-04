@@ -1,20 +1,15 @@
 package com.shop.activityservice.controller;
 
-import com.shop.activityservice.domain.*;
+import com.shop.activityservice.domain.Post;
+import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.common.ResponseDto;
-import com.shop.activityservice.dto.request.CommentWriteRequest;
 import com.shop.activityservice.dto.request.PostWriteRequest;
-import com.shop.activityservice.dto.response.CommentLikeResponse;
-import com.shop.activityservice.dto.response.CommentWriteResponse;
 import com.shop.activityservice.dto.response.PostLikeResponse;
 import com.shop.activityservice.dto.response.PostWriteResponse;
-import com.shop.activityservice.service.CustomUserDetailsService;
-import com.shop.activityservice.service.NewsfeedService;
 import com.shop.activityservice.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Posts")
@@ -23,60 +18,34 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final CustomUserDetailsService userDetailsService;
     private final PostService postService;
-    private final NewsfeedService newsfeedService;
 
-    @Operation(summary = "게시글 쓰기")
+    @Operation(summary = "포스트 작성")
     @PostMapping("/write")
-    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-        
-        Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
+    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest) {
+        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), post.getUser().getId(), post.getId(), NewsfeedType.POST);
+        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
+
+        Post post = postService.writePost(postWriteRequest, null);
+
+        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
 
         return ResponseDto.success(PostWriteResponse.of(post));
     }
 
-    @Operation(summary = "댓글 작성")
-    @PostMapping("/{post_id}/comment")
-    public ResponseDto<CommentWriteResponse> writeCommentPosts(@PathVariable("post_id") Long postid, @RequestBody CommentWriteRequest commentWriteRequest, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+    @Operation(summary = "포스트 좋아요")
+    @GetMapping("/likes/{post_id}")
+    public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId) {
+        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        Comment comment = postService.writeComment(commentWriteRequest, postid, userDetails.getUsername());
+        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
 
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), comment.getUser().getId(), comment.getId(), NewsfeedType.COMMENT);
+        PostLike postLike = postService.addPostLike(postId, null);
 
-        return ResponseDto.success(CommentWriteResponse.of(comment));
-    }
-
-    @Operation(summary = "게시글 좋아요 추가")
-    @GetMapping("{post_id}/likes")
-    public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
-        PostLike postLike = postService.addPostLike(postId, userDetails.getUsername());
-
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), postLike.getUser().getId(), postLike.getId(), NewsfeedType.POST_LIKE);
+        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
 
         return ResponseDto.success(PostLikeResponse.of(postLike));
-    }
-
-    @Operation(summary = "댓글 좋아요 추가")
-    @GetMapping("{comment_id}/comment/likes")
-    public ResponseDto<CommentLikeResponse> likeComments(@PathVariable("comment_id") Long commentId, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-
-        CommentLike commentLike = postService.addCommentLike(commentId, userDetails.getUsername());
-
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), commentLike.getUser().getId(), commentLike.getId(), NewsfeedType.COMMENT_LIKE);
-
-        return ResponseDto.success(CommentLikeResponse.of(commentLike));
     }
 
 }

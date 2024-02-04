@@ -12,13 +12,13 @@ public class PostWriteResponse {
 
     private Long id;
     private String title;
-    private String writer;
+    private Long writerId;
 
     public static PostWriteResponse of(Post post) {
         return new PostWriteResponse(
                 post.getId(),
                 post.getTitle(),
-                post.getUser().getEmail()
+                post.getUserId()
         );
     }
 
