@@ -23,22 +23,22 @@ public class PostService {
         return postRepository.save(postWriteRequest.toEntity(Long userId));
     }
 
+    // 포스트 좋아요
     @Transactional
-    public PostLike addPostLike(Long postId, String email) {
+    public PostLike addPostLike(Long postId, Long userId) {
+        // 포스트 존재 여부 체크
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BaseException(ErrorCode.POST_NOT_FOUND));
 
-        User writer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-
-        boolean isPostLike = postLikeRepository.existsByPostAndUser(post, writer);
+        // 동일 포스트 좋아요 중복 여부 체크
+        boolean isPostLike = postLikeRepository.existsByPostAndUserId(postId, userId);
         if (isPostLike) {
             throw new BaseException(ErrorCode.DUPLICATED_POST_LIKE);
         }
 
         PostLike postLike = PostLike.builder()
                 .post(post)
-                .user(writer)
+                .userId(userId)
                 .build();
 
         return postLikeRepository.save(postLike);

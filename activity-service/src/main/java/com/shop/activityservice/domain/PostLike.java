@@ -15,15 +15,14 @@ public class PostLike extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
     @Builder
-    public PostLike(User user, Post post) {
-        this.user = user;
+    public PostLike(Long userId, Post post) {
+        this.userId = userId;
         this.post = post;
     }
 }
