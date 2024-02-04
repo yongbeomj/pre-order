@@ -18,7 +18,7 @@ public class CommentLikeResponse {
         return new CommentLikeResponse(
                 commentLike.getId(),
                 commentLike.getComment().getId(),
-                commentLike.getUser().getId()
+                commentLike.getUserId()
         );
     }
 }

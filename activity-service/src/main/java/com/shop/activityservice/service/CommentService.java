@@ -3,14 +3,11 @@ package com.shop.activityservice.service;
 import com.shop.activityservice.domain.Comment;
 import com.shop.activityservice.domain.CommentLike;
 import com.shop.activityservice.domain.Post;
-import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.request.CommentWriteRequest;
-import com.shop.activityservice.dto.request.PostWriteRequest;
 import com.shop.activityservice.exception.BaseException;
 import com.shop.activityservice.exception.ErrorCode;
 import com.shop.activityservice.repository.CommentLikeRepository;
 import com.shop.activityservice.repository.CommentRepository;
-import com.shop.activityservice.repository.PostLikeRepository;
 import com.shop.activityservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,10 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final PostLikeRepository postLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
 
     // 댓글 작성
@@ -36,22 +31,22 @@ public class CommentService {
         return commentRepository.save(commentWriteRequest.toEntity(post, userId));
     }
 
+    // 댓글 좋아요
     @Transactional
-    public CommentLike addCommentLike(Long commentId, String email) {
+    public CommentLike addCommentLike(Long commentId, Long userId) {
+        // 댓글 존재 여부 확인
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.COMMENT_NOT_FOUND));
 
-        User writer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-
-        boolean isCommentLike = commentLikeRepository.existsByCommentAndUser(comment, writer);
+        // 동일 댓글 좋아요 중복 여부 확인
+        boolean isCommentLike = commentLikeRepository.existsByCommentIdAndUserId(commentId, userId);
         if (isCommentLike) {
             throw new BaseException(ErrorCode.DUPLICATED_COMMENT_LIKE);
         }
 
         CommentLike commentLike = CommentLike.builder()
                 .comment(comment)
-                .user(writer)
+                .userId(userId)
                 .build();
 
         return commentLikeRepository.save(commentLike);

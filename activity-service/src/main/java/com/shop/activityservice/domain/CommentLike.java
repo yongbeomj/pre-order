@@ -15,15 +15,14 @@ public class CommentLike extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Comment comment;
 
     @Builder
-    public CommentLike(User user, Comment comment) {
-        this.user = user;
+    public CommentLike(Long userId, Comment comment) {
+        this.userId = userId;
         this.comment = comment;
     }
 }
