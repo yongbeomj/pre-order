@@ -14,20 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
     private final PostLikeRepository postLikeRepository;
-    private final CommentLikeRepository commentLikeRepository;
 
     // 포스트 작성
     @Transactional
-    public Post writePost(PostWriteRequest postWriteRequest, String email) {
-
-        User writer = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-
-        return postRepository.save(postWriteRequest.toEntity(writer));
+    public Post writePost(PostWriteRequest postWriteRequest, Long userId) {
+        return postRepository.save(postWriteRequest.toEntity(Long userId));
     }
 
     @Transactional

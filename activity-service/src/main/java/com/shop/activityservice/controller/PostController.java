@@ -21,19 +21,18 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final CustomUserDetailsService userDetailsService;
     private final PostService postService;
-    private final NewsfeedService newsfeedService;
 
-    @Operation(summary = "게시글 쓰기")
+    @Operation(summary = "포스트 작성")
     @PostMapping("/write")
-    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, Authentication authentication) {
-        CustomUserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
-        
-        Post post = postService.writePost(postWriteRequest, userDetails.getUsername());
+    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest) {
+        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
-        // 뉴스피드 생성
-        newsfeedService.createNewsfeed(userDetails.getUser().getId(), post.getUser().getId(), post.getId(), NewsfeedType.POST);
+        // TODO : 로그인 유저(fromUserId) 정보 가져오기 (유저 서비스)
+
+        Post post = postService.writePost(postWriteRequest, null);
+
+        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
 
         return ResponseDto.success(PostWriteResponse.of(post));
     }
