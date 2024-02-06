@@ -1,7 +1,7 @@
 package com.shop.newsfeedservice.service;
 
 import com.shop.newsfeedservice.domain.Newsfeed;
-import com.shop.newsfeedservice.domain.NewsfeedType;
+import com.shop.newsfeedservice.dto.request.NewsfeedCreateRequest;
 import com.shop.newsfeedservice.dto.response.NewsfeedResponse;
 import com.shop.newsfeedservice.repository.NewsfeedRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +15,14 @@ public class NewsfeedService {
 
     private final NewsfeedRepository newsfeedRepository;
 
-    // 뉴스피드 생성 (저장)
-    public void createNewsfeed(Long activityUserId, Long targetUserId, Long targetId, NewsfeedType newsfeedType) {
-        // TODO : 유저 정보(유저 서비스), 활동 정보(활동 서비스) 가져오기
+    // 뉴스피드 생성
+    public void createNewsfeed(NewsfeedCreateRequest request) {
 
         Newsfeed newsfeed = Newsfeed.builder()
-                .activityUserId(activityUserId)
-                .targetUserId(targetUserId)
-                .targetId(targetId)
-                .newsfeedType(newsfeedType)
+                .activityUserId(request.getActivityUserId())
+                .targetUserId(request.getTargetUserId())
+                .targetId(request.getTargetId())
+                .newsfeedType(request.getActivityType())
                 .build();
 
         newsfeedRepository.save(newsfeed);

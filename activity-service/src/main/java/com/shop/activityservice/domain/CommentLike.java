@@ -1,5 +1,6 @@
 package com.shop.activityservice.domain;
 
+import com.shop.activityservice.dto.request.NewsfeedCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,14 @@ public class CommentLike extends BaseTimeEntity {
     public CommentLike(Long userId, Comment comment) {
         this.userId = userId;
         this.comment = comment;
+    }
+
+    public NewsfeedCreateRequest newsfeedCreateRequest(Long activityUserId) {
+        return NewsfeedCreateRequest.builder()
+                .activityUserId(activityUserId)
+                .targetUserId(userId)
+                .targetId(id)
+                .activityType(ActivityType.COMMENT_LIKE)
+                .build();
     }
 }

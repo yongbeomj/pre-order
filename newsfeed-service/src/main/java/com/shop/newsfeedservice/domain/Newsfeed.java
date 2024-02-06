@@ -21,11 +21,10 @@ public class Newsfeed extends BaseTimeEntity {
 
     private Long targetId; // 활동 데이터 pk
 
-    @Enumerated(EnumType.STRING)
-    private NewsfeedType newsfeedType; // 뉴스피드 타입
+    private String newsfeedType; // 뉴스피드 타입
 
     @Builder
-    public Newsfeed(Long activityUserId, Long targetUserId, Long targetId, NewsfeedType newsfeedType) {
+    public Newsfeed(Long activityUserId, Long targetUserId, Long targetId, String newsfeedType) {
         this.activityUserId = activityUserId;
         this.targetUserId = targetUserId;
         this.targetId = targetId;

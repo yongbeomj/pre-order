@@ -2,7 +2,6 @@ package com.shop.newsfeedservice.dto.response;
 
 
 import com.shop.newsfeedservice.domain.Newsfeed;
-import com.shop.newsfeedservice.domain.NewsfeedType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class NewsfeedResponse {
     private String activityUserName;
     private Long targetUserId;
     private String targetUserName;
-    private NewsfeedType newsfeedType;
+    private String newsfeedType;
     private LocalDateTime createdAt;
     private Object content;
 

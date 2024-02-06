@@ -1,5 +1,6 @@
 package com.shop.activityservice.domain;
 
+import com.shop.activityservice.dto.request.NewsfeedCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,15 @@ public class Follow extends BaseTimeEntity {
     public Follow(Long fromUserId, Long toUserId) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
+    }
+
+    public NewsfeedCreateRequest newsfeedCreateRequest() {
+        return NewsfeedCreateRequest.builder()
+                .activityUserId(fromUserId)
+                .targetUserId(toUserId)
+                .targetId(id)
+                .activityType(ActivityType.FOLLOW)
+                .build();
     }
 
 }

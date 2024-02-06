@@ -1,5 +1,6 @@
 package com.shop.activityservice.controller;
 
+import com.shop.activityservice.client.NewsfeedClient;
 import com.shop.activityservice.domain.Post;
 import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.common.ResponseDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final NewsfeedClient newsfeedClient;
 
     @Operation(summary = "포스트 작성")
     @PostMapping("/write")
@@ -26,10 +28,12 @@ public class PostController {
         // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
         // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
+        Long loginId = null;
 
-        Post post = postService.writePost(postWriteRequest, null);
+        Post post = postService.writePost(postWriteRequest, loginId);
 
-        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
+        // 뉴스피드 생성
+        newsfeedClient.createNewsfeed(post.newsfeedCreateRequest(loginId));
 
         return ResponseDto.success(PostWriteResponse.of(post));
     }
@@ -40,10 +44,12 @@ public class PostController {
         // TODO : 인증여부 체크 validation 실행 (유저 서비스)
 
         // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
+        Long loginId = null;
 
-        PostLike postLike = postService.addPostLike(postId, null);
+        PostLike postLike = postService.addPostLike(postId, loginId);
 
-        // TODO : 뉴스피드 생성 이벤트 호출 (뉴스피드 서비스)
+        // 뉴스피드 생성
+        newsfeedClient.createNewsfeed(postLike.newsfeedCreateRequest(loginId));
 
         return ResponseDto.success(PostLikeResponse.of(postLike));
     }
