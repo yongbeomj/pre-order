@@ -49,3 +49,11 @@ jwt:
     expiration: 1800000 # 30분
   refresh-token:
     expiration: 604800000 # 7일
+
+feign:
+  user:
+    name: userClient
+    url: http://localhost:8080/api/internal
+  newsfeed:
+    name: newsfeedClient
+    url: http://localhost:8082/api/internal

@@ -49,3 +49,11 @@ jwt:
     expiration: 1800000 # 30분
   refresh-token:
     expiration: 604800000 # 7일
+
+feign:
+  activity:
+    name: activityClient
+    url: http://localhost:8081/api/internal
+  newsfeed:
+    name: newsfeedClient
+    url: http://localhost:8082/api/internal
