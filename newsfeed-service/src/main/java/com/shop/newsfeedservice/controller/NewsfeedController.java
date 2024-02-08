@@ -1,12 +1,15 @@
 package com.shop.newsfeedservice.controller;
 
+import com.shop.newsfeedservice.client.UserClient;
 import com.shop.newsfeedservice.domain.Newsfeed;
 import com.shop.newsfeedservice.dto.common.ResponseDto;
 import com.shop.newsfeedservice.dto.response.NewsfeedResponse;
 import com.shop.newsfeedservice.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,17 +25,19 @@ import java.util.stream.Collectors;
 public class NewsfeedController {
 
     private final NewsfeedService newsfeedService;
+    private final UserClient userClient;
 
     @Operation(summary = "뉴스피드 조회")
     @GetMapping("/me")
-    public ResponseDto<List<NewsfeedResponse>> searchNewsfeed() {
-        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
-
-        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
-        List<Newsfeed> newsfeeds = newsfeedService.searchNewsfeed(null);
+    public ResponseDto<List<NewsfeedResponse>> searchNewsfeed(HttpServletRequest request) {
+        // token 유효여부 확인 및 유저 정보 조회
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Long principalId = userClient.getCurrentUser(header).getBody();
+        
+        List<Newsfeed> newsfeeds = newsfeedService.searchNewsfeed(principalId);
 
         List<NewsfeedResponse> newsfeedResponses = newsfeeds.stream()
-                .map(newsfeed -> newsfeedService.newsfeedDetails(newsfeed, null))
+                .map(newsfeed -> newsfeedService.newsfeedDetails(newsfeed, principalId))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 

@@ -1,6 +1,7 @@
 package com.shop.userservice.dto.request;
 
 import com.shop.userservice.domain.User;
+import com.shop.userservice.domain.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -29,17 +30,26 @@ public class UserJoinRequest {
     @NotBlank
     private String greeting;
 
+    private UserRole role;
+
     private int AutoNumber;
 
     // dto to entity
     public User toEntity() {
-        return User.builder()
+        User.UserBuilder userBuilder = User.builder()
                 .email(this.email)
                 .password(this.password)
                 .name(this.name)
                 .profileImage(this.profileImage)
-                .greeting(this.greeting)
-                .build();
+                .greeting(this.greeting);
+
+        if (this.role != null) {
+            userBuilder.role(this.role);
+        } else {
+            userBuilder.role(UserRole.USER);
+        }
+
+        return userBuilder.build();
     }
 
 }

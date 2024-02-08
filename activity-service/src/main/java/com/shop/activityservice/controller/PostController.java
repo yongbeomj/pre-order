@@ -1,6 +1,7 @@
 package com.shop.activityservice.controller;
 
 import com.shop.activityservice.client.NewsfeedClient;
+import com.shop.activityservice.client.UserClient;
 import com.shop.activityservice.domain.Post;
 import com.shop.activityservice.domain.PostLike;
 import com.shop.activityservice.dto.common.ResponseDto;
@@ -10,7 +11,9 @@ import com.shop.activityservice.dto.response.PostWriteResponse;
 import com.shop.activityservice.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Posts")
@@ -20,36 +23,37 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final UserClient userClient;
     private final NewsfeedClient newsfeedClient;
 
     @Operation(summary = "포스트 작성")
     @PostMapping("/write")
-    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest) {
-        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
+    public ResponseDto<PostWriteResponse> writePosts(@RequestBody PostWriteRequest postWriteRequest, HttpServletRequest request) {
+        // token 유효여부 확인 및 유저 정보 조회
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Long principalId = userClient.getCurrentUser(header).getBody();
 
-        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
-        Long loginId = null;
-
-        Post post = postService.writePost(postWriteRequest, loginId);
+        // 포스트 작성
+        Post post = postService.writePost(postWriteRequest, principalId);
 
         // 뉴스피드 생성
-        newsfeedClient.createNewsfeed(post.newsfeedCreateRequest(loginId));
+        newsfeedClient.createNewsfeed(post.newsfeedCreateRequest(principalId));
 
         return ResponseDto.success(PostWriteResponse.of(post));
     }
 
     @Operation(summary = "포스트 좋아요")
     @GetMapping("/likes/{post_id}")
-    public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId) {
-        // TODO : 인증여부 체크 validation 실행 (유저 서비스)
+    public ResponseDto<PostLikeResponse> likePosts(@PathVariable("post_id") Long postId, HttpServletRequest request) {
+        // token 유효여부 확인 및 유저 정보 조회
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        Long principalId = userClient.getCurrentUser(header).getBody();
 
-        // TODO : 로그인 유저 정보 가져오기 (유저 서비스)
-        Long loginId = null;
-
-        PostLike postLike = postService.addPostLike(postId, loginId);
+        // 포스트 좋아요
+        PostLike postLike = postService.addPostLike(postId, principalId);
 
         // 뉴스피드 생성
-        newsfeedClient.createNewsfeed(postLike.newsfeedCreateRequest(loginId));
+        newsfeedClient.createNewsfeed(postLike.newsfeedCreateRequest(principalId));
 
         return ResponseDto.success(PostLikeResponse.of(postLike));
     }
