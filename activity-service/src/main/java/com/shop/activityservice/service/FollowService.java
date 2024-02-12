@@ -8,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class FollowService {
 
     private final FollowRepository followRepository;
 
+    // 팔로우 생성
     @Transactional
     public Follow followUser(Long fromUserid, Long toUserId) {
         // 본인 팔로우 하는 경우 체크
@@ -33,4 +36,11 @@ public class FollowService {
 
         return followRepository.save(follow);
     }
+
+    // 팔로우 유저 조회
+    public List<Follow> getToUsers(Long fromUserId) {
+        return followRepository.findAllByFromUserId(fromUserId);
+    }
+
 }
+

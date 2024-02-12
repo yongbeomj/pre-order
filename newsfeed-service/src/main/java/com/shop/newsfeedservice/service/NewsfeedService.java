@@ -1,8 +1,8 @@
 package com.shop.newsfeedservice.service;
 
+import com.shop.newsfeedservice.client.ActivityClient;
 import com.shop.newsfeedservice.domain.Newsfeed;
 import com.shop.newsfeedservice.dto.request.NewsfeedCreateRequest;
-import com.shop.newsfeedservice.dto.response.NewsfeedResponse;
 import com.shop.newsfeedservice.repository.NewsfeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import java.util.List;
 public class NewsfeedService {
 
     private final NewsfeedRepository newsfeedRepository;
+    private final ActivityClient activityClient;
 
     // 뉴스피드 생성
     public void createNewsfeed(NewsfeedCreateRequest request) {
@@ -29,57 +30,16 @@ public class NewsfeedService {
     }
 
     // 뉴스피드 조회
-    public List<Newsfeed> searchNewsfeed(Long loginUserId) {
-        // TODO : 로그인 유저가 팔로우한 정보 가져오기 (활동 서비스)
-//        List<Follow> fromFollow = followRepository.findAllByFromUserId(fromUserId);
+    public List<Newsfeed> searchNewsfeed(Long principalId) {
+        // 내가 팔로우한 전체 유저 조회
+        List<Long> toUsers = activityClient.findToUsers(principalId);
 
-        // TODO : 로그인 유저가 팔로우한 유저가 활동한 내역 뉴스피드 테이블에서 조회
-//        return fromFollow.stream()
-//                .map(Follow::getToUser)
-//                .flatMap(toUser -> newsfeedRepository.findAllByActivityUserId(toUser.getId()).stream()
-//                        .sorted(Comparator.comparing(Newsfeed::getCreatedAt).reversed()))
-//                .collect(Collectors.toList());
-        return null;
-    }
+        // 팔로우 유저의 히스토리 조회 (뉴스피드 테이블 내역)
+        List<Newsfeed> newsfeeds = toUsers.stream()
+                .flatMap(toUserId -> newsfeedRepository.findAllByActivityUserId(toUserId).stream())
+                .toList();
 
-    // 뉴스피드 타입에 따른 세부 데이터
-    public NewsfeedResponse newsfeedDetails(Newsfeed newsfeed, Long loginUserId) {
-        Object newsfeedResult = null;
-        // TODO : newsfeed type에 따라 활동 정보 가져오기 (활동 서비스)
-//        switch (newsfeed.getNewsfeedType()) {
-//            case FOLLOW:
-//                Follow findFollow = followRepository.findById(newsfeed.getTargetId()).orElse(null);
-//                if (findFollow != null) {
-//                    newsfeedResult = FollowResponse.of(findFollow);
-//                }
-//                break;
-//            case POST:
-//                Post findPost = postRepository.findById(newsfeed.getTargetId()).orElse(null);
-//                if (findPost != null) {
-//                    newsfeedResult = PostWriteResponse.of(findPost);
-//                }
-//                break;
-//            case POST_LIKE:
-//                PostLike findPostLike = postLikeRepository.findById(newsfeed.getTargetId()).orElse(null);
-//                if (findPostLike != null) {
-//                    newsfeedResult = PostLikeResponse.of(findPostLike);
-//                }
-//                break;
-//            case COMMENT:
-//                Comment findComment = commentRepository.findById(newsfeed.getTargetId()).orElse(null);
-//                if (findComment != null) {
-//                    newsfeedResult = CommentWriteResponse.of(findComment);
-//                }
-//                break;
-//            case COMMENT_LIKE:
-//                CommentLike findCommentLike = commentLikeRepository.findById(newsfeed.getTargetId()).orElse(null);
-//                if (findCommentLike != null) {
-//                    newsfeedResult = CommentLikeResponse.of(findCommentLike);
-//                }
-//                break;
-//        }
-
-        return (newsfeedResult != null) ? NewsfeedResponse.of(newsfeed, loginUserId, newsfeedResult) : null;
+        return newsfeeds;
     }
 
 }
