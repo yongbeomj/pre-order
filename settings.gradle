@@ -1,1 +1,6 @@
 rootProject.name = 'pre-order'
+
+include 'module-user-service'
+include 'module-activity-service'
+include 'module-newsfeed-service'
+
