@@ -37,3 +37,5 @@ out/
 .vscode/
 
 db_data
+/src/main/resources/
+/src/main/generated/
