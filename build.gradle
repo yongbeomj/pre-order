@@ -47,3 +47,39 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.example'
+    version = '1.0-SNAPSHOT'
+
+    java {
+        sourceCompatibility = '17'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies { // 공통적으로 사용하는 의존성 정의
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.security:spring-security-test'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.1' // validation
+
+        runtimeOnly 'com.mysql:mysql-connector-j' // mysql
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA
+
+        compileOnly 'org.projectlombok:lombok' // lombok
+        annotationProcessor 'org.projectlombok:lombok' // lombok
+
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2' // springdoc (swagger)
+
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0' // feign client
+    }
+}
