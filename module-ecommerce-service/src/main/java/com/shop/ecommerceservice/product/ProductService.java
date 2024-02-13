@@ -1,5 +1,7 @@
 package com.shop.ecommerceservice.product;
 
+import com.shop.ecommerceservice.common.exception.BaseException;
+import com.shop.ecommerceservice.common.response.ErrorCode;
 import com.shop.ecommerceservice.product.dto.request.ProductCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,12 @@ public class ProductService {
     // 상품 목록 조회
     public List<Product> searchList() {
         return productRepository.findAll();
+    }
+
+    // 상품 상세 조회
+    public Product searchProductInfo(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
 

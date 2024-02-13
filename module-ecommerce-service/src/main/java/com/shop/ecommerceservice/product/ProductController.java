@@ -29,4 +29,11 @@ public class ProductController {
         List<Product> products = productService.searchList();
         return ResponseDto.success(products);
     }
+
+    @Operation(summary = "상품 상세 조회")
+    @GetMapping("/{product_id}")
+    public ResponseDto<Product> searchDetail(@PathVariable("product_id") Long productId) {
+        Product product = productService.searchProductInfo(productId);
+        return ResponseDto.success(product);
+    }
 }

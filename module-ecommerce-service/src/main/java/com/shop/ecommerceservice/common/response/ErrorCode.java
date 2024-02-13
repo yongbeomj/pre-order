@@ -25,6 +25,7 @@ public enum ErrorCode {
     ALREADY_USER_FOLLOW(HttpStatus.CONFLICT, "Already user followed"),
     NOT_FOLLOW_ME(HttpStatus.BAD_REQUEST, "Users can't follow themselves"),
 
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "Product not founded"),
 
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "개발팀에 문의해주세요. (Database Error)"),
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "개발팀에 문의해주세요. (System Error)");
