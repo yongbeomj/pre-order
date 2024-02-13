@@ -36,6 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
+/env_file.env
 db_data
 /src/main/resources/
 /src/main/generated/
