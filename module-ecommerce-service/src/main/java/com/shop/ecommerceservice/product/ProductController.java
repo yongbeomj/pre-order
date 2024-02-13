@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
@@ -21,4 +23,10 @@ public class ProductController {
         return ResponseDto.success(ProductCreateResponse.of(product));
     }
 
+    @Operation(summary = "상품 목록 조회")
+    @GetMapping()
+    public ResponseDto<List<Product>> search() {
+        List<Product> products = productService.searchList();
+        return ResponseDto.success(products);
+    }
 }
