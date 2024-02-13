@@ -15,6 +15,7 @@ public class ProductCreateRequest {
     private String title;
     private String content;
     private Long price;
+    private int stock;
     private boolean reservationStatus;
     private LocalDateTime reservedAt;
 

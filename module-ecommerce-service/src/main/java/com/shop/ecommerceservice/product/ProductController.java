@@ -36,4 +36,11 @@ public class ProductController {
         Product product = productService.searchProductInfo(productId);
         return ResponseDto.success(product);
     }
+
+    @Operation(summary = "상품 재고 조회")
+    @GetMapping("/stock/{product_id}")
+    public ResponseDto<ProductStock> searchStock(@PathVariable("product_id") Long productId) {
+        ProductStock productStock = productService.getStock(productId);
+        return ResponseDto.success(productStock);
+    }
 }

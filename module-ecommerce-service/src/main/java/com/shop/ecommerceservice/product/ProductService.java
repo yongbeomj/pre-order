@@ -14,11 +14,21 @@ import java.util.List;
 public class ProductService {
 
     public final ProductRepository productRepository;
+    public final ProductStockRepository productStockRepository;
 
     // 상품 등록
     @Transactional
-    public Product create(ProductCreateRequest productCreateRequest) {
-        return productRepository.save(productCreateRequest.toEntity());
+    public Product create(ProductCreateRequest request) {
+        Product savedProduct = productRepository.save(request.toEntity());
+
+        ProductStock productStock = ProductStock.builder()
+                .stock(request.getStock())
+                .productId(savedProduct.getId())
+                .build();
+
+        productStockRepository.save(productStock);
+
+        return savedProduct;
     }
 
     // 상품 목록 조회
@@ -32,5 +42,12 @@ public class ProductService {
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
+    // 상품 재고 조회
+    public ProductStock getStock(Long productId) {
+        productRepository.findById(productId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        return productStockRepository.findByProductId(productId).get();
+    }
 
 }
