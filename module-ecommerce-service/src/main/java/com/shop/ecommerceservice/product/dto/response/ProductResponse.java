@@ -10,19 +10,21 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCreateResponse {
+public class ProductResponse {
 
     private String title;
     private String content;
     private Long price;
+    private Integer stock;
     private boolean reservationStatus;
     private LocalDateTime reservedAt;
 
-    public static ProductCreateResponse of(Product product) {
-        return new ProductCreateResponse(
+    public static ProductResponse of(Product product) {
+        return new ProductResponse(
                 product.getTitle(),
                 product.getContent(),
                 product.getPrice(),
+                product.getStock(),
                 product.isReservationStatus(),
                 product.getReservedAt()
         );

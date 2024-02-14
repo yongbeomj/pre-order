@@ -29,15 +29,20 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private Long price;
 
+    @Column(nullable = false)
+    private Integer stock;
+
+    @Column(nullable = false)
     private boolean reservationStatus;
 
     private LocalDateTime reservedAt;
 
     @Builder
-    public Product(String title, String content, Long price, boolean reservationStatus, LocalDateTime reservedAt) {
+    public Product(String title, String content, Long price, Integer stock, boolean reservationStatus, LocalDateTime reservedAt) {
         this.title = title;
         this.content = content;
         this.price = price;
+        this.stock = stock;
         this.reservationStatus = reservationStatus;
         this.reservedAt = reservedAt;
     }

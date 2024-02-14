@@ -15,7 +15,7 @@ public class ProductCreateRequest {
     private String title;
     private String content;
     private Long price;
-    private int stock;
+    private Integer stock;
     private boolean reservationStatus;
     private LocalDateTime reservedAt;
 
@@ -24,6 +24,7 @@ public class ProductCreateRequest {
                 .title(this.title)
                 .content(this.content)
                 .price(this.price)
+                .stock(this.stock)
                 .reservationStatus(this.reservationStatus)
                 .reservedAt(this.reservedAt)
                 .build();

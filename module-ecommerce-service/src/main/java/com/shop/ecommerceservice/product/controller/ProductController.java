@@ -1,13 +1,14 @@
 package com.shop.ecommerceservice.product.controller;
 
 import com.shop.ecommerceservice.common.response.ResponseDto;
-import com.shop.ecommerceservice.product.entity.Product;
-import com.shop.ecommerceservice.product.entity.ProductStock;
 import com.shop.ecommerceservice.product.dto.request.ProductCreateRequest;
-import com.shop.ecommerceservice.product.dto.response.ProductCreateResponse;
+import com.shop.ecommerceservice.product.dto.response.ProductResponse;
+import com.shop.ecommerceservice.product.dto.response.ProductStockResponse;
+import com.shop.ecommerceservice.product.entity.Product;
 import com.shop.ecommerceservice.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ProductController {
 
     @Operation(summary = "상품 등록")
     @PostMapping("/create")
-    public ResponseDto<ProductCreateResponse> create(@RequestBody ProductCreateRequest productCreateRequest) {
+    public ResponseDto<ProductResponse> create(@RequestBody ProductCreateRequest productCreateRequest, BindingResult result) {
         Product product = productService.create(productCreateRequest);
-        return ResponseDto.success(ProductCreateResponse.of(product));
+        return ResponseDto.success(ProductResponse.of(product));
     }
 
     @Operation(summary = "상품 목록 조회")
@@ -35,15 +36,16 @@ public class ProductController {
 
     @Operation(summary = "상품 상세 조회")
     @GetMapping("/{product_id}")
-    public ResponseDto<Product> searchDetail(@PathVariable("product_id") Long productId) {
+    public ResponseDto<ProductResponse> searchDetail(@PathVariable("product_id") Long productId) {
         Product product = productService.searchProductInfo(productId);
-        return ResponseDto.success(product);
+        return ResponseDto.success(ProductResponse.of(product));
     }
 
     @Operation(summary = "상품 재고 조회")
     @GetMapping("/stock/{product_id}")
-    public ResponseDto<ProductStock> searchStock(@PathVariable("product_id") Long productId) {
-        ProductStock productStock = productService.getStock(productId);
-        return ResponseDto.success(productStock);
+    public ResponseDto<ProductStockResponse> searchStock(@PathVariable("product_id") Long productId) {
+        Product product = productService.searchProductInfo(productId);
+        return ResponseDto.success(ProductStockResponse.of(product));
     }
+
 }
