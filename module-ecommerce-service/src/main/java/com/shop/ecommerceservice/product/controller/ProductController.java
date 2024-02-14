@@ -1,8 +1,11 @@
-package com.shop.ecommerceservice.product;
+package com.shop.ecommerceservice.product.controller;
 
 import com.shop.ecommerceservice.common.response.ResponseDto;
+import com.shop.ecommerceservice.product.entity.Product;
+import com.shop.ecommerceservice.product.entity.ProductStock;
 import com.shop.ecommerceservice.product.dto.request.ProductCreateRequest;
 import com.shop.ecommerceservice.product.dto.response.ProductCreateResponse;
+import com.shop.ecommerceservice.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

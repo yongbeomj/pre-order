@@ -1,6 +1,6 @@
-package com.shop.ecommerceservice.product;
+package com.shop.ecommerceservice.product.entity;
 
-import com.shop.ecommerceservice.common.domain.BaseTimeEntity;
+import com.shop.ecommerceservice.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,12 @@
-package com.shop.ecommerceservice.product;
+package com.shop.ecommerceservice.product.service;
 
 import com.shop.ecommerceservice.common.exception.BaseException;
 import com.shop.ecommerceservice.common.response.ErrorCode;
+import com.shop.ecommerceservice.product.entity.Product;
+import com.shop.ecommerceservice.product.entity.ProductStock;
 import com.shop.ecommerceservice.product.dto.request.ProductCreateRequest;
+import com.shop.ecommerceservice.product.repository.ProductRepository;
+import com.shop.ecommerceservice.product.repository.ProductStockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
