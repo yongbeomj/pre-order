@@ -1,0 +1,31 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/preorder
+    username: root
+    password: 1234
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.sql: debug
+    root: debug
+
+feign:
+  user:
+    name: userClient
+    url: http://localhost:8080/api/internal
+  activity:
+    name: activityClient
+    url: http://localhost:8081/api/internal
