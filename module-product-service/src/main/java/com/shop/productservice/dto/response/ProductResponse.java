@@ -1,6 +1,7 @@
 package com.shop.productservice.dto.response;
 
 import com.shop.productservice.entity.Product;
+import com.shop.productservice.entity.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class ProductResponse {
     private String content;
     private Long price;
     private Integer stock;
-    private boolean reservationStatus;
+    private ProductType productType;
     private LocalDateTime reservedAt;
 
     public static ProductResponse of(Product product) {
@@ -25,7 +26,7 @@ public class ProductResponse {
                 product.getContent(),
                 product.getPrice(),
                 product.getStock(),
-                product.isReservationStatus(),
+                product.getProductType(),
                 product.getReservedAt()
         );
     }

@@ -1,6 +1,6 @@
 package com.shop.paymentservice.entity;
 
-public enum PaymentStatus {
+public enum PaymentType {
     PENDING,
     PROCESSING,
     COMPLETED,

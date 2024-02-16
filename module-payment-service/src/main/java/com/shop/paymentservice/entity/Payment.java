@@ -25,12 +25,12 @@ public class Payment extends BaseTimeEntity {
     private Long orderId; // 주문 정보
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus; // 결제 상태
+    private PaymentType paymentType; // 결제 상태
 
     @Builder
-    public Payment(Long userId, Long orderId, PaymentStatus paymentStatus) {
+    public Payment(Long userId, Long orderId, PaymentType paymentType) {
         this.userId = userId;
         this.orderId = orderId;
-        this.paymentStatus = paymentStatus;
+        this.paymentType = paymentType;
     }
 }

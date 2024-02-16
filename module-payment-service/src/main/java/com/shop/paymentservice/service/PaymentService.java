@@ -3,7 +3,7 @@ package com.shop.paymentservice.service;
 import com.shop.paymentservice.client.OrderClient;
 import com.shop.paymentservice.dto.request.PaymentCreateRequest;
 import com.shop.paymentservice.entity.Payment;
-import com.shop.paymentservice.entity.PaymentStatus;
+import com.shop.paymentservice.entity.PaymentType;
 import com.shop.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class PaymentService {
         Payment createPayment = Payment.builder()
                 .userId(request.getUserId())
                 .orderId(createOrderId)
-                .paymentStatus(PaymentStatus.PENDING)
+                .paymentType(PaymentType.PENDING)
                 .build();
 
         return paymentRepository.save(createPayment);

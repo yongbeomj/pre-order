@@ -1,6 +1,7 @@
 package com.shop.productservice.dto.request;
 
 import com.shop.productservice.entity.Product;
+import com.shop.productservice.entity.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class ProductCreateRequest {
     private String content;
     private Long price;
     private Integer stock;
-    private boolean reservationStatus;
+    private ProductType productType;
     private LocalDateTime reservedAt;
 
     public Product toEntity() {
@@ -25,7 +26,7 @@ public class ProductCreateRequest {
                 .content(this.content)
                 .price(this.price)
                 .stock(this.stock)
-                .reservationStatus(this.reservationStatus)
+                .productType(this.productType)
                 .reservedAt(this.reservedAt)
                 .build();
     }
