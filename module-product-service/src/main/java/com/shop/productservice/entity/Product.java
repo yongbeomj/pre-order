@@ -46,4 +46,18 @@ public class Product extends BaseTimeEntity {
         this.reservationStatus = reservationStatus;
         this.reservedAt = reservedAt;
     }
+
+    // 재고 증가
+    public void increaseStock(Integer quantity) {
+        this.stock += quantity;
+    }
+
+    // 재고 감소
+    public void decreaseStock(Integer quantity) {
+        if (this.stock < quantity) {
+            throw new BaseException(ErrorCode.OUT_OF_STOCK);
+        }
+
+        this.stock -= quantity;
+    }
 }

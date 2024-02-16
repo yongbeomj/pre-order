@@ -20,7 +20,7 @@ public class InternalOrderController {
     @Operation(summary = "주문 생성")
     @PostMapping("/orders")
     public ResponseEntity<Long> createOrder(@RequestParam("productId") Long productId, @RequestParam("quantity") Integer quantity) {
-        Order order = orderService.create(productId, quantity);
+        Order order = orderService.createOrder(productId, quantity);
 
         return ResponseEntity.ok(order.getId());
     }
