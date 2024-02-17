@@ -20,12 +20,11 @@ spring:
 logging:
   level:
     org.hibernate.sql: debug
-    root: debug
 
 feign:
-  user:
-    name: userClient
-    url: http://localhost:8080/api/internal
-  activity:
-    name: activityClient
-    url: http://localhost:8081/api/internal
+  product:
+    name: productClient
+    url: http://localhost:8084/api/internal
+  order:
+    name: orderClient
+    url: http://localhost:8086/api/internal

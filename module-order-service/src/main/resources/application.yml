@@ -23,9 +23,9 @@ logging:
 #    root: debug
 
 feign:
-  user:
-    name: userClient
-    url: http://localhost:8080/api/internal
-  activity:
-    name: activityClient
-    url: http://localhost:8081/api/internal
+  product:
+    name: productClient
+    url: http://localhost:8084/api/internal
+  payment:
+    name: paymentClient
+    url: http://localhost:8085/api/internal
