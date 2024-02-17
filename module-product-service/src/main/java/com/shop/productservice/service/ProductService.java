@@ -34,4 +34,22 @@ public class ProductService {
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
+    // 재고 증가
+    @Transactional
+    public void increaseStock(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        product.increaseStock(quantity);
+    }
+
+    // 재고 감소
+    @Transactional
+    public void decreaseStock(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        product.decreaseStock(quantity);
+    }
+
 }

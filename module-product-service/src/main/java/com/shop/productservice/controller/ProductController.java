@@ -8,7 +8,6 @@ import com.shop.productservice.entity.Product;
 import com.shop.productservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class ProductController {
 
     @Operation(summary = "상품 등록")
     @PostMapping("/create")
-    public ResponseDto<ProductResponse> create(@RequestBody ProductCreateRequest productCreateRequest, BindingResult result) {
+    public ResponseDto<ProductResponse> create(@RequestBody ProductCreateRequest productCreateRequest) {
         Product product = productService.create(productCreateRequest);
         return ResponseDto.success(ProductResponse.of(product));
     }
