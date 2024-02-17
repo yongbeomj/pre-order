@@ -36,4 +36,10 @@ public class OrderService {
         productClient.decreaseStock(productId, quantity);
     }
 
+    // 주문 단건 조회
+    public Order searchOrder(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
+    }
+
 }
