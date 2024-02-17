@@ -28,6 +28,8 @@ public enum ErrorCode {
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "Product not founded"),
     DUPLICATED_PRODUCT_TITLE(HttpStatus.CONFLICT, "Duplicated product title"),
 
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Payment information not founded"),
+
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "개발팀에 문의해주세요. (Database Error)"),
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "개발팀에 문의해주세요. (System Error)");
 

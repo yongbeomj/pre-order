@@ -29,4 +29,8 @@ public class Payment extends BaseTimeEntity {
         this.orderId = orderId;
         this.paymentType = paymentType;
     }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
 }

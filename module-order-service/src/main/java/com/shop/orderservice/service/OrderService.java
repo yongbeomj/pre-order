@@ -33,7 +33,7 @@ public class OrderService {
         }
 
         // 재고 차감
-        productClient.decreaseStock(productId, quantity);
+        decreaseStock(productId, quantity);
     }
 
     // 주문 단건 조회
@@ -42,4 +42,13 @@ public class OrderService {
                 .orElseThrow(() -> new BaseException(ErrorCode.ORDER_NOT_FOUND));
     }
 
+    // 재고 증가
+    public void increaseStock(Long productId, Integer quantity) {
+        productClient.increaseStock(productId, quantity);
+    }
+
+    // 재고 감소
+    public void decreaseStock(Long productId, Integer quantity) {
+        productClient.decreaseStock(productId, quantity);
+    }
 }
