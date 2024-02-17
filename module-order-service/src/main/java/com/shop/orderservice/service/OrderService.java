@@ -3,6 +3,7 @@ package com.shop.orderservice.service;
 import com.shop.orderservice.client.ProductClient;
 import com.shop.orderservice.common.exception.BaseException;
 import com.shop.orderservice.common.response.ErrorCode;
+import com.shop.orderservice.dto.request.OrderCreateRequest;
 import com.shop.orderservice.entity.Order;
 import com.shop.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +17,14 @@ public class OrderService {
     private final ProductClient productClient;
 
     // 주문 생성
-    public Order createOrder(Long productId, Integer quantity) {
+    public Order createOrder(OrderCreateRequest request) {
         // 재고 부족 여부 확인
-        checkProductStock(productId, quantity);
+        checkProductStock(request.getProductId(), request.getQuantity());
 
-        Order saveOrder = Order.builder()
-                .productId(productId)
-                .quantity(quantity)
-                .build();
-
-        return orderRepository.save(saveOrder);
+        return orderRepository.save(request.toEntity());
     }
 
-    // 재고 부족여부 확인 및 차감
+    // 재고 부족 여부 확인 및 차감
     public void checkProductStock(Long productId, Integer quantity) {
         Integer stock = productClient.searchStock(productId).getBody();
 

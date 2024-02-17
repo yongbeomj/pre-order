@@ -1,9 +1,7 @@
 package com.shop.paymentservice.service;
 
-import com.shop.paymentservice.client.OrderClient;
 import com.shop.paymentservice.dto.request.PaymentCreateRequest;
 import com.shop.paymentservice.entity.Payment;
-import com.shop.paymentservice.entity.PaymentType;
 import com.shop.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,23 +11,10 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final OrderClient orderClient;
 
-    // 결제 생성
+    // 결제 생성 - 결제 프로세스 진입 시 대기 상태로 결제 건 생성
     public Payment createPayment(PaymentCreateRequest request) {
-        Long createOrderId = createOrder(request.getProductId(), request.getQuantity());
-
-        Payment createPayment = Payment.builder()
-                .userId(request.getUserId())
-                .orderId(createOrderId)
-                .paymentType(PaymentType.PENDING)
-                .build();
-
-        return paymentRepository.save(createPayment);
+        return paymentRepository.save(request.toEntity());
     }
 
-    // 주문 생성
-    public Long createOrder(Long productId, Integer quantity) {
-        return orderClient.createOrder(productId, quantity).getBody();
-    }
 }

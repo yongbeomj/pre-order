@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentCreateResponse {
 
-    private Long userId;
     private Long orderId;
-    private PaymentType paymentType; // 결제 상태
+    private PaymentType paymentType;
 
     public static PaymentCreateResponse of(Payment payment) {
         return new PaymentCreateResponse(
-                payment.getUserId(),
                 payment.getOrderId(),
                 payment.getPaymentType()
         );

@@ -1,5 +1,7 @@
 package com.shop.paymentservice.dto.request;
 
+import com.shop.paymentservice.entity.Payment;
+import com.shop.paymentservice.entity.PaymentType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,8 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentCreateRequest {
 
-    private Long userId;
-    private Long productId;
-    private Integer quantity;
+    private Long orderId;
+
+    public Payment toEntity() {
+        return Payment.builder()
+                .orderId(this.orderId)
+                .paymentType(PaymentType.PENDING)
+                .build();
+    }
 
 }

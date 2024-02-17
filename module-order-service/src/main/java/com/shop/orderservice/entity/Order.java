@@ -19,13 +19,17 @@ public class Order extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
+    private Long userId; // 주문 유저
+
+    @Column(nullable = false)
     private Long productId; // 상품 정보
 
     @Column(nullable = false)
     private Integer quantity; // 주문 수량
 
     @Builder
-    public Order(Long productId, Integer quantity) {
+    public Order(Long userId, Long productId, Integer quantity) {
+        this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
     }
