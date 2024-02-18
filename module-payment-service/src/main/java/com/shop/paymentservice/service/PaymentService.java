@@ -35,10 +35,8 @@ public class PaymentService {
         // 결제 중으로 변경
         findPayment.setPaymentType(PaymentType.PROCESSING);
 
-        double paymentFailedRate = Math.random();
-
         // 고객 귀책 사유 시뮬레이션 - 결제 실패 이탈 (20%)
-        if (paymentFailedRate < 0.2) {
+        if (Math.random() <= 0.2) {
             handlePaymentFailure(findPayment, PaymentType.FAILED);
             return findPayment;
         }
