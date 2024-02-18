@@ -26,9 +26,17 @@ public class PaymentController {
     }
 
     @Operation(summary = "결제 처리")
-    @PostMapping("/{payment_id}")
-    public ResponseDto<PaymentResponse> payment(@PathVariable("payment_id") Long paymentId) {
+    @PostMapping("/progress/{payment_id}")
+    public ResponseDto<PaymentResponse> processPayment(@PathVariable("payment_id") Long paymentId) {
         Payment payment = paymentService.processPayment(paymentId);
+
+        return ResponseDto.success(PaymentResponse.of(payment));
+    }
+
+    @Operation(summary = "결제 취소")
+    @PostMapping("/cancel/{payment_id}")
+    public ResponseDto<PaymentResponse> cancelPayment(@PathVariable("payment_id") Long paymentId) {
+        Payment payment = paymentService.cancelPayment(paymentId);
 
         return ResponseDto.success(PaymentResponse.of(payment));
     }

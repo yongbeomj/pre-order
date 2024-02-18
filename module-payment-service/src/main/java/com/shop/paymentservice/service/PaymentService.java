@@ -37,13 +37,7 @@ public class PaymentService {
 
         double paymentFailedRate = Math.random();
 
-        // 고객 귀책 사유 시뮬레이션 - 변심 이탈 (10%)
-        if (paymentFailedRate < 0.1) {
-            handlePaymentFailure(findPayment, PaymentType.CANCELED);
-            return findPayment;
-        }
-
-        // 고객 귀책 사유 시뮬레이션 - 결제 실패 이탈 (10%)
+        // 고객 귀책 사유 시뮬레이션 - 결제 실패 이탈 (20%)
         if (paymentFailedRate < 0.2) {
             handlePaymentFailure(findPayment, PaymentType.FAILED);
             return findPayment;
@@ -52,6 +46,16 @@ public class PaymentService {
         // 결제 처리 완료
         findPayment.setPaymentType(PaymentType.COMPLETED);
 
+        return findPayment;
+    }
+
+    // 결제 취소
+    @Transactional
+    public Payment cancelPayment(Long paymentId) {
+        Payment findPayment = paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PAYMENT_NOT_FOUND));
+
+        handlePaymentFailure(findPayment, PaymentType.CANCELED);
         return findPayment;
     }
 
