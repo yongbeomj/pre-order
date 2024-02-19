@@ -5,6 +5,7 @@ import com.shop.productservice.dto.request.ProductCreateRequest;
 import com.shop.productservice.dto.response.ProductResponse;
 import com.shop.productservice.dto.response.ProductStockResponse;
 import com.shop.productservice.entity.Product;
+import com.shop.productservice.entity.ProductType;
 import com.shop.productservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,11 @@ public class ProductController {
 
     @Operation(summary = "상품 목록 조회")
     @GetMapping()
-    public ResponseDto<List<Product>> search() {
-        List<Product> products = productService.searchList();
+    public ResponseDto<List<Product>> search(
+            @RequestParam(value = "productType", required = false) ProductType productType,
+            @RequestParam(value = "timeOffset", required = false) Integer timeOffset
+    ) {
+        List<Product> products = productService.searchList(productType, timeOffset);
         return ResponseDto.success(products);
     }
 

@@ -4,11 +4,13 @@ import com.shop.productservice.common.exception.BaseException;
 import com.shop.productservice.common.response.ErrorCode;
 import com.shop.productservice.dto.request.ProductCreateRequest;
 import com.shop.productservice.entity.Product;
+import com.shop.productservice.entity.ProductType;
 import com.shop.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,8 +26,28 @@ public class ProductService {
     }
 
     // 상품 목록 조회
-    public List<Product> searchList() {
-        return productRepository.findAll();
+    public List<Product> searchList(ProductType productType, Integer timeOffset) {
+
+        // 전체 조회 (일반 + 예약)
+        if (productType == null) {
+            return productRepository.findAll();
+        }
+
+        // 일반 상품 조회
+        if (productType == ProductType.COMMON) {
+            return productRepository.findAllByProductType(productType);
+        }
+
+        // 예약 상품 조회
+        if (timeOffset == null) {
+            return productRepository.findAllByProductType(productType);
+        } else {
+            LocalDateTime startDatetime = LocalDateTime.now().plusMinutes(timeOffset);
+            LocalDateTime endDatetime = startDatetime.plusMinutes(1);
+
+            return productRepository.findByProductTypeAndReservedAtBetween(productType, startDatetime, endDatetime);
+        }
+
     }
 
     // 상품 상세 조회
