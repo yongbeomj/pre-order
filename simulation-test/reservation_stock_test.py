@@ -14,7 +14,7 @@ def create_product():
     reserved_at = ""
 
     if product_type == 'RESERVATION':
-        random_minutes = random.randint(1, 6)
+        random_minutes = random.randint(6, 200)
         reserved_at = (datetime.now() + timedelta(minutes=random_minutes)).isoformat()
 
     payload = {
@@ -101,7 +101,7 @@ def test_simulation():
 
 def main():
     # 테스트 상품 생성
-    for _ in range(10):
+    for _ in range(100):
         create_product()
 
     # 재고 조회 테스트 시나리오 실행
