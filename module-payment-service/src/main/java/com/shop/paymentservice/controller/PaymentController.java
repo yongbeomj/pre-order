@@ -2,7 +2,6 @@ package com.shop.paymentservice.controller;
 
 import com.shop.paymentservice.common.response.ResponseDto;
 import com.shop.paymentservice.dto.request.PaymentCreateRequest;
-import com.shop.paymentservice.dto.response.PaymentCreateResponse;
 import com.shop.paymentservice.dto.response.PaymentResponse;
 import com.shop.paymentservice.entity.Payment;
 import com.shop.paymentservice.service.PaymentService;
@@ -19,16 +18,24 @@ public class PaymentController {
 
     @Operation(summary = "결제 프로세스 진입")
     @PostMapping("/enter")
-    public ResponseDto<PaymentCreateResponse> paymentProcessEnter(@RequestBody PaymentCreateRequest request) {
-        Payment createPayment = paymentService.createPayment(request);
+    public ResponseDto<PaymentResponse> paymentProcessEnter(@RequestBody PaymentCreateRequest request) {
+        Payment payment = paymentService.createPayment(request);
 
-        return ResponseDto.success(PaymentCreateResponse.of(createPayment));
+        return ResponseDto.success(PaymentResponse.of(payment));
     }
 
     @Operation(summary = "결제 처리")
-    @PostMapping("/{payment_id}")
-    public ResponseDto<PaymentResponse> payment(@PathVariable("payment_id") Long paymentId) {
+    @PostMapping("/progress/{payment_id}")
+    public ResponseDto<PaymentResponse> processPayment(@PathVariable("payment_id") Long paymentId) {
         Payment payment = paymentService.processPayment(paymentId);
+
+        return ResponseDto.success(PaymentResponse.of(payment));
+    }
+
+    @Operation(summary = "결제 취소")
+    @PostMapping("/cancel/{payment_id}")
+    public ResponseDto<PaymentResponse> cancelPayment(@PathVariable("payment_id") Long paymentId) {
+        Payment payment = paymentService.cancelPayment(paymentId);
 
         return ResponseDto.success(PaymentResponse.of(payment));
     }

@@ -21,6 +21,10 @@ public class ProductCreateRequest {
     private LocalDateTime reservedAt;
 
     public Product toEntity() {
+        if (this.productType == ProductType.COMMON) {
+            this.reservedAt = LocalDateTime.now();
+        }
+
         return Product.builder()
                 .title(this.title)
                 .content(this.content)

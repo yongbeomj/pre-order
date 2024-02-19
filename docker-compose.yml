@@ -6,11 +6,13 @@ services:
     image: mysql
     command: --default-authentication-plugin=caching_sha2_password
     restart: always
+    env_file:
+      - env_file.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_DATABASE}
-      MYSQL_PASSWORD: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: Asia/Seoul
     volumes:
       - ./db_data:/var/lib/mysql
@@ -22,3 +24,17 @@ services:
     restart: always
     ports:
       - "8090:8080"
+
+  payment-test:
+    image: payment-test
+    build:
+      context: ./simulation-test
+      dockerfile: Dockerfile
+    command: [ "python", "payment_test.py" ]
+
+  reservation-stock-test:
+    image: reservation-stock-test
+    build:
+      context: ./simulation-test
+      dockerfile: Dockerfile
+    command: [ "python", "reservation_stock_test.py" ]
