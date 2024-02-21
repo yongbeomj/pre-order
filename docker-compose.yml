@@ -19,6 +19,12 @@ services:
     ports:
       - "3306:3306"
 
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
   adminer:
     image: adminer
     restart: always
@@ -30,11 +36,12 @@ services:
     build:
       context: ./simulation-test
       dockerfile: Dockerfile
-    command: [ "python", "payment_test.py" ]
+    command: python payment_test.py
 
   reservation-stock-test:
     image: reservation-stock-test
     build:
       context: ./simulation-test
       dockerfile: Dockerfile
-    command: [ "python", "reservation_stock_test.py" ]
+    command: python reservation_stock_test.py
+

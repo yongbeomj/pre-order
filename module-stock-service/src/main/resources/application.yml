@@ -29,6 +29,9 @@ logging:
 #    org.hibernate.type: trace
 
 feign:
+  product:
+    name: productClient
+    url: http://localhost:8084/api/internal
   payment:
     name: paymentClient
     url: http://localhost:8085/api/internal
