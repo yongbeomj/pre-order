@@ -6,3 +6,5 @@ include 'module-newsfeed-service'
 include 'module-product-service'
 include 'module-payment-service'
 include 'module-order-service'
+include 'module-stock-service'
+
