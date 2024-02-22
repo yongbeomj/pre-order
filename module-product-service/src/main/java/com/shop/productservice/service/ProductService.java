@@ -56,6 +56,11 @@ public class ProductService {
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
+    // 재고 전체 조회
+    public List<Product> searchAllStock() {
+        return productRepository.findAll();
+    }
+
     // 재고 증가
     @Transactional
     public void increaseStock(Long productId, Integer quantity) {
