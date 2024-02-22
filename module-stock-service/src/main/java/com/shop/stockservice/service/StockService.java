@@ -18,8 +18,8 @@ public class StockService {
 
         List<StockResponse> stockResponses = productClient.searchAllStock();
 
-        for (StockResponse stockResponse : stockResponses) {
-            stockCacheService.save(stockResponse);
+        for (StockResponse response : stockResponses) {
+            stockCacheService.setData(response.getProductId().toString(), response.getStock().toString());
         }
 
     }
