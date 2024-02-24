@@ -62,4 +62,9 @@ public class Product extends BaseTimeEntity {
 
         this.stock -= quantity;
     }
+
+    // 재고 업데이트
+    public void updateStock(Integer stock) {
+        this.stock = stock;
+    }
 }

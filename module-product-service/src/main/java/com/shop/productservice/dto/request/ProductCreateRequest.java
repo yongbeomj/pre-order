@@ -3,12 +3,12 @@ package com.shop.productservice.dto.request;
 import com.shop.productservice.entity.Product;
 import com.shop.productservice.entity.ProductType;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductCreateRequest {

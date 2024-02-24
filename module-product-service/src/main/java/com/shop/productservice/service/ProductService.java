@@ -61,22 +61,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    // 재고 증가
+    // 재고 업데이트
     @Transactional
-    public void increaseStock(Long productId, Integer quantity) {
+    public void updateStock(Long productId, Integer newStock) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        product.increaseStock(quantity);
+        product.updateStock(newStock);
     }
-
-    // 재고 감소
-    @Transactional
-    public void decreaseStock(Long productId, Integer quantity) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
-
-        product.decreaseStock(quantity);
-    }
-
 }

@@ -1,7 +1,5 @@
 package com.shop.stockservice.controller;
 
-import com.shop.stockservice.common.response.ResponseDto;
-import com.shop.stockservice.dto.response.StockResponse;
 import com.shop.stockservice.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/stocks")
+@RequestMapping("/api/internal/stocks")
 @RequiredArgsConstructor
-public class StockController {
+public class InternalStockController {
 
     private final StockService stockService;
 
@@ -23,12 +21,16 @@ public class StockController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "재고 생성")
+    @PostMapping()
+    public ResponseEntity<?> createStock(@RequestParam("productId") Long productId, @RequestParam("stock") Integer stock) {
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "단품 재고 조회")
     @GetMapping("/{product_id}")
-    public ResponseDto<StockResponse> searchStock(@PathVariable("product_id") Long productId) {
-        Integer stock = stockService.searchStock(productId);
-
-        return ResponseDto.success(StockResponse.of(productId, stock));
+    public ResponseEntity<Integer> searchStock(@PathVariable("product_id") Long productId) {
+        return ResponseEntity.ok(stockService.searchStock(productId));
     }
 
     @Operation(summary = "재고 증가")

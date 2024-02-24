@@ -1,5 +1,6 @@
 package com.shop.productservice.controller;
 
+import com.shop.productservice.dto.response.ProductResponse;
 import com.shop.productservice.dto.response.ProductStockResponse;
 import com.shop.productservice.entity.Product;
 import com.shop.productservice.service.ProductService;
@@ -16,6 +17,13 @@ import java.util.List;
 public class InternalProductController {
 
     private final ProductService productService;
+
+    @Operation(summary = "상품 정보 조회")
+    @GetMapping()
+    public ResponseEntity<ProductResponse> searchProduct(@RequestParam("productId") Long productId) {
+        Product product = productService.searchProductInfo(productId);
+        return ResponseEntity.ok(ProductResponse.of(product));
+    }
 
     @Operation(summary = "전체 상품 재고 조회")
     @GetMapping("/stock-all")
@@ -34,17 +42,10 @@ public class InternalProductController {
         return ResponseEntity.ok(product.getStock());
     }
 
-    @Operation(summary = "재고 증가")
-    @PostMapping("/stock/increase")
-    public ResponseEntity<?> increaseStock(@RequestParam("productId") Long productId, @RequestParam("quantity") Integer quantity) {
-        productService.increaseStock(productId, quantity);
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "재고 감소")
-    @PostMapping("/stock/decrease")
-    public ResponseEntity<?> decreaseStock(@RequestParam("productId") Long productId, @RequestParam("quantity") Integer quantity) {
-        productService.decreaseStock(productId, quantity);
+    @Operation(summary = "재고 업데이트")
+    @PostMapping("/stock/update")
+    public ResponseEntity<?> updateStock(@RequestParam("productId") Long productId, @RequestParam("stock") Integer stock) {
+        productService.updateStock(productId, stock);
         return ResponseEntity.ok().build();
     }
 
