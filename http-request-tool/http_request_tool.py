@@ -1,18 +1,49 @@
 import requests
 import random
+from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 
+PRODUCT_API_URL = "http://localhost:8084/api/products"
 PAYMENT_API_URL = "http://localhost:8085/api/payments"
 ORDER_API_URL = "http://localhost:8086/api/orders"
+STOCK_API_URL = "http://localhost:8087/api/stocks"
+
+
+# 상품 생성
+def create_product(stock):
+    url = f"{PRODUCT_API_URL}/create"
+
+    payload = {
+        "title": "title",
+        "content": "contents",
+        "price": random.randint(1000, 10000),
+        "stock": stock,
+        "productType": "RESERVATION",
+        "reservedAt": (datetime.now() + timedelta(minutes=random.randint(-100, -30))).isoformat()
+    }
+
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code == 200:
+            product_id = response.json()['response']['productId']
+            print(f"상품 생성 Success (productId: {product_id})")
+            return product_id
+        else:
+            print(f"상품 생성 Fail")
+            return None
+
+    except Exception as e:
+        print(f"상품 생성 Error sending request to {url}: {e}")
+        return None
 
 
 # 주문 생성
-def create_order(user_id):
+def create_order(user_id, product_id):
     url = f"{ORDER_API_URL}"
     payload = {
         "userId": user_id,
-        "productId": random.randint(1, 5),
-        "quantity": random.randint(1, 10)
+        "productId": product_id,
+        "quantity": 1
     }
 
     try:
@@ -84,20 +115,20 @@ def make_payment(payment_id):
             if payment_type == 'COMPLETED':
                 print(f"결제 처리 Success (paymentId: {payment_id})")
             else:
-                print(f"결제 처리 Fail")
+                print(f"결제 처리 Fail (paymentId: {payment_id})")
         else:
-            print(f"결제 처리 Fail")
+            print(f"결제 처리 Fail (paymentId: {payment_id})")
 
     except Exception as e:
         print(f"결제 처리 Error sending request to {url}: {e}")
 
 
 # Test Simulation
-def test_simulation(user_id):
+def test_simulation(user_id, product_id):
     # 주문 생성
-    order_id = create_order(user_id)
+    order_id = create_order(user_id, product_id)
 
-    if order_id is not None:
+    if order_id:
         # 결제 프로세스 진입
         payment_id = enter_payment(order_id)
 
@@ -111,12 +142,14 @@ def test_simulation(user_id):
 
 
 def main():
-    # 결제 테스트 시나리오 request
-    user_ids = range(1, 10001)
-    num_requests = len(user_ids)
+    # 상품 생성
+    product_id = create_product(stock=10)
+
+    # 시나리오 요청 수 (유저 수)
+    num_requests = 30
 
     with ThreadPoolExecutor(max_workers=num_requests) as executor:
-        tasks = [executor.submit(test_simulation, user_id) for user_id in user_ids]
+        tasks = [executor.submit(test_simulation, user_id, product_id) for user_id in range(1, num_requests + 1)]
 
         for future in tasks:
             future.result()

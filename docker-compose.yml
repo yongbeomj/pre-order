@@ -31,17 +31,9 @@ services:
     ports:
       - "8090:8080"
 
-  payment-test:
-    image: payment-test
+  http-request-tool:
+    image: http-request-tool
+    restart: always
     build:
-      context: ./simulation-test
+      context: http-request-tool
       dockerfile: Dockerfile
-    command: python payment_test.py
-
-  reservation-stock-test:
-    image: reservation-stock-test
-    build:
-      context: ./simulation-test
-      dockerfile: Dockerfile
-    command: python reservation_stock_test.py
-
