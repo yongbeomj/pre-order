@@ -1,6 +1,6 @@
 package com.shop.paymentservice.client;
 
-import com.shop.paymentservice.dto.response.OrderResponse;
+import com.shop.paymentservice.payment.dto.response.OrderResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

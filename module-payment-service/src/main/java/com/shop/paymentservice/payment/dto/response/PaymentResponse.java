@@ -1,7 +1,7 @@
-package com.shop.paymentservice.dto.response;
+package com.shop.paymentservice.payment.dto.response;
 
-import com.shop.paymentservice.entity.Payment;
-import com.shop.paymentservice.entity.PaymentType;
+import com.shop.paymentservice.payment.entity.Payment;
+import com.shop.paymentservice.payment.entity.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

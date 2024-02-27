@@ -1,4 +1,4 @@
-package com.shop.paymentservice.entity;
+package com.shop.paymentservice.payment.entity;
 
 import com.shop.paymentservice.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;

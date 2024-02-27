@@ -1,4 +1,4 @@
-package com.shop.paymentservice.entity;
+package com.shop.paymentservice.payment.entity;
 
 public enum PaymentType {
     PENDING,

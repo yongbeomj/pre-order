@@ -1,14 +1,14 @@
-package com.shop.paymentservice.service;
+package com.shop.paymentservice.payment.service;
 
 import com.shop.paymentservice.client.OrderClient;
 import com.shop.paymentservice.client.StockClient;
 import com.shop.paymentservice.common.exception.BaseException;
 import com.shop.paymentservice.common.response.ErrorCode;
-import com.shop.paymentservice.dto.request.PaymentCreateRequest;
-import com.shop.paymentservice.dto.response.OrderResponse;
-import com.shop.paymentservice.entity.Payment;
-import com.shop.paymentservice.entity.PaymentType;
-import com.shop.paymentservice.repository.PaymentRepository;
+import com.shop.paymentservice.payment.dto.request.PaymentCreateRequest;
+import com.shop.paymentservice.payment.dto.response.OrderResponse;
+import com.shop.paymentservice.payment.entity.Payment;
+import com.shop.paymentservice.payment.entity.PaymentType;
+import com.shop.paymentservice.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

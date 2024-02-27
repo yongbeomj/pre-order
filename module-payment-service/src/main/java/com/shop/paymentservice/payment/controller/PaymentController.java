@@ -1,10 +1,10 @@
-package com.shop.paymentservice.controller;
+package com.shop.paymentservice.payment.controller;
 
 import com.shop.paymentservice.common.response.ResponseDto;
-import com.shop.paymentservice.dto.request.PaymentCreateRequest;
-import com.shop.paymentservice.dto.response.PaymentResponse;
-import com.shop.paymentservice.entity.Payment;
-import com.shop.paymentservice.service.PaymentService;
+import com.shop.paymentservice.payment.dto.request.PaymentCreateRequest;
+import com.shop.paymentservice.payment.dto.response.PaymentResponse;
+import com.shop.paymentservice.payment.entity.Payment;
+import com.shop.paymentservice.payment.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
