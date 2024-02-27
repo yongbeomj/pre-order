@@ -1,7 +1,8 @@
-package com.shop.newsfeedservice.exception;
+package com.shop.newsfeedservice.common.exception;
 
-import com.shop.newsfeedservice.dto.common.ErrorResponse;
-import com.shop.newsfeedservice.dto.common.ResponseDto;
+import com.shop.newsfeedservice.common.response.ErrorCode;
+import com.shop.newsfeedservice.common.response.ErrorResponse;
+import com.shop.newsfeedservice.common.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

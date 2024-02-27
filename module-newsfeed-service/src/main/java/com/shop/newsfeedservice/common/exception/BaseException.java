@@ -1,5 +1,6 @@
-package com.shop.newsfeedservice.exception;
+package com.shop.newsfeedservice.common.exception;
 
+import com.shop.newsfeedservice.common.response.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.shop.newsfeedservice.dto.request;
+package com.shop.newsfeedservice.newsfeed.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,17 +6,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class NewsfeedCreateRequest {
+public class NewsfeedSearchRequest {
 
     private Long activityUserId;
-    private Long targetUserId;
     private Long targetId;
     private String activityType;
 
     @Builder
-    public NewsfeedCreateRequest(Long activityUserId, Long targetUserId, Long targetId, String activityType) {
+    public NewsfeedSearchRequest(Long activityUserId, Long targetId, String activityType) {
         this.activityUserId = activityUserId;
-        this.targetUserId = targetUserId;
         this.targetId = targetId;
         this.activityType = activityType;
     }

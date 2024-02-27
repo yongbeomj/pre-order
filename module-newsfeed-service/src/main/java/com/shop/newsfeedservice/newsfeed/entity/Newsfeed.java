@@ -1,5 +1,6 @@
-package com.shop.newsfeedservice.domain;
+package com.shop.newsfeedservice.newsfeed.entity;
 
+import com.shop.newsfeedservice.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

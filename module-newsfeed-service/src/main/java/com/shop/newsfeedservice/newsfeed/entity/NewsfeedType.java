@@ -1,4 +1,4 @@
-package com.shop.newsfeedservice.domain;
+package com.shop.newsfeedservice.newsfeed.entity;
 
 public enum NewsfeedType {
     FOLLOW,

@@ -1,8 +1,8 @@
-package com.shop.newsfeedservice.controller;
+package com.shop.newsfeedservice.newsfeed.controller;
 
-import com.shop.newsfeedservice.dto.common.ResponseDto;
-import com.shop.newsfeedservice.dto.request.NewsfeedCreateRequest;
-import com.shop.newsfeedservice.service.NewsfeedService;
+import com.shop.newsfeedservice.common.response.ResponseDto;
+import com.shop.newsfeedservice.newsfeed.dto.request.NewsfeedCreateRequest;
+import com.shop.newsfeedservice.newsfeed.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

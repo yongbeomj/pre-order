@@ -1,7 +1,7 @@
-package com.shop.newsfeedservice.repository;
+package com.shop.newsfeedservice.newsfeed.repository;
 
 
-import com.shop.newsfeedservice.domain.Newsfeed;
+import com.shop.newsfeedservice.newsfeed.entity.Newsfeed;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

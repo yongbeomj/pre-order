@@ -1,4 +1,4 @@
-package com.shop.newsfeedservice.exception;
+package com.shop.newsfeedservice.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

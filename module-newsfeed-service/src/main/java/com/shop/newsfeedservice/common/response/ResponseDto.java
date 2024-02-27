@@ -1,4 +1,4 @@
-package com.shop.newsfeedservice.dto.common;
+package com.shop.newsfeedservice.common.response;
 
 import lombok.Builder;
 import lombok.Getter;

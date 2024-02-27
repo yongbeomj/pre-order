@@ -1,10 +1,10 @@
-package com.shop.newsfeedservice.controller;
+package com.shop.newsfeedservice.newsfeed.controller;
 
 import com.shop.newsfeedservice.client.UserClient;
-import com.shop.newsfeedservice.domain.Newsfeed;
-import com.shop.newsfeedservice.dto.common.ResponseDto;
-import com.shop.newsfeedservice.dto.response.NewsfeedSearchResponse;
-import com.shop.newsfeedservice.service.NewsfeedService;
+import com.shop.newsfeedservice.newsfeed.entity.Newsfeed;
+import com.shop.newsfeedservice.common.response.ResponseDto;
+import com.shop.newsfeedservice.newsfeed.dto.response.NewsfeedSearchResponse;
+import com.shop.newsfeedservice.newsfeed.service.NewsfeedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

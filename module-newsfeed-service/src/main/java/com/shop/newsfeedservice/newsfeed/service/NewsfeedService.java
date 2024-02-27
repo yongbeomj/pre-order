@@ -1,9 +1,9 @@
-package com.shop.newsfeedservice.service;
+package com.shop.newsfeedservice.newsfeed.service;
 
 import com.shop.newsfeedservice.client.ActivityClient;
-import com.shop.newsfeedservice.domain.Newsfeed;
-import com.shop.newsfeedservice.dto.request.NewsfeedCreateRequest;
-import com.shop.newsfeedservice.repository.NewsfeedRepository;
+import com.shop.newsfeedservice.newsfeed.entity.Newsfeed;
+import com.shop.newsfeedservice.newsfeed.dto.request.NewsfeedCreateRequest;
+import com.shop.newsfeedservice.newsfeed.repository.NewsfeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

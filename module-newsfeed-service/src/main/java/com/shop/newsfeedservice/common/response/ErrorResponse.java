@@ -1,6 +1,5 @@
-package com.shop.newsfeedservice.dto.common;
+package com.shop.newsfeedservice.common.response;
 
-import com.shop.newsfeedservice.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

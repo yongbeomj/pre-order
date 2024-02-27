@@ -1,6 +1,6 @@
-package com.shop.newsfeedservice.dto.response;
+package com.shop.newsfeedservice.newsfeed.dto.response;
 
-import com.shop.newsfeedservice.domain.Newsfeed;
+import com.shop.newsfeedservice.newsfeed.entity.Newsfeed;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
