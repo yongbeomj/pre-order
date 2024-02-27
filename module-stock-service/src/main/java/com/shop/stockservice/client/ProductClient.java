@@ -1,6 +1,6 @@
 package com.shop.stockservice.client;
 
-import com.shop.stockservice.dto.response.StockResponse;
+import com.shop.stockservice.stock.dto.response.StockResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

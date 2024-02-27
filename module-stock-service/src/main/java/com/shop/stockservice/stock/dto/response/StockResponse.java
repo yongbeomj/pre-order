@@ -1,4 +1,4 @@
-package com.shop.stockservice.dto.response;
+package com.shop.stockservice.stock.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

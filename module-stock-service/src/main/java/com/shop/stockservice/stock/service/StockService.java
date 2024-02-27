@@ -1,9 +1,9 @@
-package com.shop.stockservice.service;
+package com.shop.stockservice.stock.service;
 
 import com.shop.stockservice.client.ProductClient;
 import com.shop.stockservice.common.exception.BaseException;
 import com.shop.stockservice.common.response.ErrorCode;
-import com.shop.stockservice.dto.response.StockResponse;
+import com.shop.stockservice.stock.dto.response.StockResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

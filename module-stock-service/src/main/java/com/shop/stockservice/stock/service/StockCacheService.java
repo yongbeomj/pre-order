@@ -1,4 +1,4 @@
-package com.shop.stockservice.service;
+package com.shop.stockservice.stock.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

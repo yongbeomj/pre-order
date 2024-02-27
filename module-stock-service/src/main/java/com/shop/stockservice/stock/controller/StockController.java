@@ -1,8 +1,8 @@
-package com.shop.stockservice.controller;
+package com.shop.stockservice.stock.controller;
 
 import com.shop.stockservice.common.response.ResponseDto;
-import com.shop.stockservice.dto.response.StockResponse;
-import com.shop.stockservice.service.StockService;
+import com.shop.stockservice.stock.dto.response.StockResponse;
+import com.shop.stockservice.stock.service.StockService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
