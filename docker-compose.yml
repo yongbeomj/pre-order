@@ -7,7 +7,7 @@ services:
     command: --default-authentication-plugin=caching_sha2_password
     restart: always
     env_file:
-      - env_file.env
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
