@@ -1,5 +1,6 @@
 package com.shop.productservice.service;
 
+import com.shop.productservice.client.StockClient;
 import com.shop.productservice.common.exception.BaseException;
 import com.shop.productservice.common.response.ErrorCode;
 import com.shop.productservice.dto.request.ProductCreateRequest;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ProductService {
 
     public final ProductRepository productRepository;
+    public final StockClient stockClient;
 
     // 상품 등록
     @Transactional

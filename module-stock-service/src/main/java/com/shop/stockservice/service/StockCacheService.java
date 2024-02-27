@@ -40,7 +40,16 @@ public class StockCacheService {
 
     // 캐시 삭제
     public void deleteData(String productId) {
-        redisTemplate.delete(productId);
+        redisTemplate.delete(generateKey(productId));
+    }
+
+    // 값 증가
+    public Long increase(String productId, Integer quantity) {
+        return redisTemplate.opsForValue().increment(generateKey(productId), quantity);
+    }
+
+    public Long decrease(String productId, Integer quantity) {
+        return redisTemplate.opsForValue().decrement(generateKey(productId), quantity);
     }
 
     // 캐시 키 생성 (접두어 포함)

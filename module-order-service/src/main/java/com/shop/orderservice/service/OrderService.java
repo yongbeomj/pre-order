@@ -22,7 +22,7 @@ public class OrderService {
     private final StockClient stockClient;
 
     // 주문 생성
-    public Order createOrder(OrderCreateRequest request) {
+    public synchronized Order createOrder(OrderCreateRequest request) {
         // 재고 부족 여부 확인
         validateOrder(request.getProductId(), request.getQuantity());
 

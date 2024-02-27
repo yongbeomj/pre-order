@@ -24,6 +24,7 @@ public class InternalStockController {
     @Operation(summary = "재고 생성")
     @PostMapping()
     public ResponseEntity<?> createStock(@RequestParam("productId") Long productId, @RequestParam("stock") Integer stock) {
+        stockService.createStock(productId, stock);
         return ResponseEntity.ok().build();
     }
 

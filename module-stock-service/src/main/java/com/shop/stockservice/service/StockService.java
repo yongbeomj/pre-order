@@ -5,10 +5,12 @@ import com.shop.stockservice.common.exception.BaseException;
 import com.shop.stockservice.common.response.ErrorCode;
 import com.shop.stockservice.dto.response.StockResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StockService {
@@ -31,7 +33,7 @@ public class StockService {
     }
 
     // 단품 재고 조회
-    public Integer searchStock(Long productId) {
+    public synchronized Integer searchStock(Long productId) {
         // redis 조회
         String cacheStock = stockCacheService.getData(productId.toString());
         if (cacheStock != null) {
@@ -45,31 +47,21 @@ public class StockService {
     }
 
     // 캐시 재고 증가
-    public void increaseStock(Long productId, Integer quantity) {
-        Integer currentStock = searchStock(productId);
-        int newStock = currentStock + quantity;
-
-        // 캐시 저장
-        stockCacheService.setData(productId.toString(), Integer.toString(newStock));
-
-        // DB 저장
-        productClient.updateStock(productId, newStock);
+    public synchronized void increaseStock(Long productId, Integer quantity) {
+        Long newStock = stockCacheService.increase(productId.toString(), quantity);
+        productClient.updateStock(productId, newStock.intValue());
     }
 
     // 캐시 재고 차감
-    public void decreaseStock(Long productId, Integer quantity) {
+    public synchronized void decreaseStock(Long productId, Integer quantity) {
         Integer currentStock = searchStock(productId);
-        int newStock = currentStock - quantity;
 
-        if (newStock < 0) {
+        if (currentStock - quantity < 0) {
             throw new BaseException(ErrorCode.OUT_OF_STOCK);
         }
 
-        // 캐시 저장
-        stockCacheService.setData(productId.toString(), Integer.toString(newStock));
-
-        // DB 저장
-        productClient.updateStock(productId, newStock);
+        Long newStock = stockCacheService.decrease(productId.toString(), quantity);
+        productClient.updateStock(productId, newStock.intValue());
     }
 
 }
