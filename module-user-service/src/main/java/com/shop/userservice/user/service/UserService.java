@@ -114,7 +114,7 @@ public class UserService {
 
     // 로그아웃
     @Transactional
-    public Token logout(String token) {
+    public void logout(String token) {
         Token findToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new BaseException(ErrorCode.INVALID_TOKEN));
 
@@ -127,7 +127,7 @@ public class UserService {
         // blacklist 만료 여부 true로 변경
         findToken.setExpired(true);
 
-        return tokenRepository.saveAndFlush(findToken);
+        tokenRepository.saveAndFlush(findToken);
     }
 
     public void allLogout(String email) {

@@ -85,7 +85,7 @@ public class UserController {
 
     @Operation(summary = "모든 기기에서 로그아웃")
     @GetMapping("/all-logout")
-    public ResponseDto<TokenResponse> allDevicelogout(HttpServletRequest request, Authentication authentication) {
+    public ResponseDto<TokenResponse> allDevicelogout(Authentication authentication) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
         userService.allLogout(userDetails.getUsername());
 
