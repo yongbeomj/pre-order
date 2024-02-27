@@ -1,5 +1,6 @@
 package com.shop.productservice.service;
 
+import com.shop.productservice.client.StockClient;
 import com.shop.productservice.common.exception.BaseException;
 import com.shop.productservice.common.response.ErrorCode;
 import com.shop.productservice.dto.request.ProductCreateRequest;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ProductService {
 
     public final ProductRepository productRepository;
+    public final StockClient stockClient;
 
     // 상품 등록
     @Transactional
@@ -56,22 +58,17 @@ public class ProductService {
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
     }
 
-    // 재고 증가
+    // 재고 전체 조회
+    public List<Product> searchAllStock() {
+        return productRepository.findAll();
+    }
+
+    // 재고 업데이트
     @Transactional
-    public void increaseStock(Long productId, Integer quantity) {
+    public void updateStock(Long productId, Integer newStock) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
 
-        product.increaseStock(quantity);
+        product.updateStock(newStock);
     }
-
-    // 재고 감소
-    @Transactional
-    public void decreaseStock(Long productId, Integer quantity) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new BaseException(ErrorCode.PRODUCT_NOT_FOUND));
-
-        product.decreaseStock(quantity);
-    }
-
 }

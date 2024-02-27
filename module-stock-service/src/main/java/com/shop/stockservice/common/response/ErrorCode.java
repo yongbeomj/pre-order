@@ -1,4 +1,4 @@
-package com.shop.orderservice.common.response;
+package com.shop.stockservice.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +27,6 @@ public enum ErrorCode {
 
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "Product not founded"),
     DUPLICATED_PRODUCT_TITLE(HttpStatus.CONFLICT, "Duplicated product title"),
-
-    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "Order infomation not found"),
-    ORDER_NOT_AVAILABLE(HttpStatus.BAD_REQUEST, "Not an available time to order"),
 
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "The product is out of stock"),
 

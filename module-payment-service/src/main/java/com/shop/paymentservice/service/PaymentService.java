@@ -1,7 +1,7 @@
 package com.shop.paymentservice.service;
 
 import com.shop.paymentservice.client.OrderClient;
-import com.shop.paymentservice.client.ProductClient;
+import com.shop.paymentservice.client.StockClient;
 import com.shop.paymentservice.common.exception.BaseException;
 import com.shop.paymentservice.common.response.ErrorCode;
 import com.shop.paymentservice.dto.request.PaymentCreateRequest;
@@ -19,7 +19,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final OrderClient orderClient;
-    private final ProductClient productClient;
+    private final StockClient stockClient;
 
     // 결제 생성
     public Payment createPayment(PaymentCreateRequest request) {
@@ -62,7 +62,7 @@ public class PaymentService {
         OrderResponse response = orderClient.searchOrder(payment.getOrderId()).getBody();
 
         // 재고 증가
-        productClient.increaseStock(response.getProductId(), response.getQuantity());
+        stockClient.increaseStock(response.getProductId(), response.getQuantity());
 
         // 결제 상태 변경
         payment.setPaymentType(paymentType);

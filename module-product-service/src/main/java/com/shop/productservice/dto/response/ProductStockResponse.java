@@ -10,14 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductStockResponse {
 
-    private Long id;
-    private String title;
+    private Long productId;
     private Integer stock;
 
     public static ProductStockResponse of(Product product) {
         return new ProductStockResponse(
                 product.getId(),
-                product.getTitle(),
                 product.getStock()
         );
     }

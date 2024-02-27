@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProductResponse {
 
+    private Long productId;
     private String title;
     private String content;
     private Long price;
@@ -22,6 +23,7 @@ public class ProductResponse {
 
     public static ProductResponse of(Product product) {
         return new ProductResponse(
+                product.getId(),
                 product.getTitle(),
                 product.getContent(),
                 product.getPrice(),

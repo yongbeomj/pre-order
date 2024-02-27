@@ -11,7 +11,7 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         #        show_sql: true
@@ -29,3 +29,6 @@ feign:
   payment:
     name: paymentClient
     url: http://localhost:8085/api/internal
+  stock:
+    name: stockClient
+    url: http://localhost:8087/api/internal
