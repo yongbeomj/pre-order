@@ -1,13 +1,13 @@
-package com.shop.orderservice.service;
+package com.shop.orderservice.order.service;
 
 import com.shop.orderservice.client.ProductClient;
 import com.shop.orderservice.client.StockClient;
 import com.shop.orderservice.common.exception.BaseException;
 import com.shop.orderservice.common.response.ErrorCode;
-import com.shop.orderservice.dto.request.OrderCreateRequest;
-import com.shop.orderservice.dto.response.ProductResponse;
-import com.shop.orderservice.entity.Order;
-import com.shop.orderservice.repository.OrderRepository;
+import com.shop.orderservice.order.dto.request.OrderCreateRequest;
+import com.shop.orderservice.order.dto.response.ProductResponse;
+import com.shop.orderservice.order.entity.Order;
+import com.shop.orderservice.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.shop.orderservice.dto.response;
+package com.shop.orderservice.order.dto.response;
 
-import com.shop.orderservice.entity.Order;
+import com.shop.orderservice.order.entity.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

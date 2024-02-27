@@ -1,8 +1,8 @@
-package com.shop.orderservice.controller;
+package com.shop.orderservice.order.controller;
 
-import com.shop.orderservice.dto.response.OrderResponse;
-import com.shop.orderservice.entity.Order;
-import com.shop.orderservice.service.OrderService;
+import com.shop.orderservice.order.dto.response.OrderResponse;
+import com.shop.orderservice.order.entity.Order;
+import com.shop.orderservice.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

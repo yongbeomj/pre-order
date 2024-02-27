@@ -1,4 +1,4 @@
-package com.shop.orderservice.entity;
+package com.shop.orderservice.order.entity;
 
 import com.shop.orderservice.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
