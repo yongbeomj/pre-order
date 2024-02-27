@@ -5,7 +5,7 @@ import com.shop.activityservice.comment.entiity.CommentLike;
 import com.shop.activityservice.post.entiity.Post;
 import com.shop.activityservice.comment.dto.request.CommentWriteRequest;
 import com.shop.activityservice.common.exception.BaseException;
-import com.shop.activityservice.common.exception.ErrorCode;
+import com.shop.activityservice.common.response.ErrorCode;
 import com.shop.activityservice.comment.repository.CommentLikeRepository;
 import com.shop.activityservice.comment.repository.CommentRepository;
 import com.shop.activityservice.post.repository.PostRepository;

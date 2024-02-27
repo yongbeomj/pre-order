@@ -1,5 +1,6 @@
 package com.shop.activityservice.common.exception;
 
+import com.shop.activityservice.common.response.ErrorCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

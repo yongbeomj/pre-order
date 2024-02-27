@@ -1,6 +1,5 @@
 package com.shop.activityservice.common.response;
 
-import com.shop.activityservice.common.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

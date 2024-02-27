@@ -2,7 +2,7 @@ package com.shop.activityservice.follow.service;
 
 import com.shop.activityservice.follow.entiity.Follow;
 import com.shop.activityservice.common.exception.BaseException;
-import com.shop.activityservice.common.exception.ErrorCode;
+import com.shop.activityservice.common.response.ErrorCode;
 import com.shop.activityservice.follow.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

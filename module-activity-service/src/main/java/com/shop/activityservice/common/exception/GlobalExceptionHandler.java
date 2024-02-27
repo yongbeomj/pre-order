@@ -1,5 +1,6 @@
 package com.shop.activityservice.common.exception;
 
+import com.shop.activityservice.common.response.ErrorCode;
 import com.shop.activityservice.common.response.ErrorResponse;
 import com.shop.activityservice.common.response.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
