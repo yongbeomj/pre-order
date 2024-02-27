@@ -1,6 +1,6 @@
 package com.shop.activityservice.client;
 
-import com.shop.activityservice.dto.request.NewsfeedCreateRequest;
+import com.shop.activityservice.client.dto.NewsfeedCreateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
