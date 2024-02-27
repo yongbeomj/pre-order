@@ -1,4 +1,4 @@
-package com.shop.productservice.entity;
+package com.shop.productservice.product.entity;
 
 import com.shop.productservice.common.entity.BaseTimeEntity;
 import com.shop.productservice.common.exception.BaseException;

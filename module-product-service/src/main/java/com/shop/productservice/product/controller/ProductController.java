@@ -1,12 +1,12 @@
-package com.shop.productservice.controller;
+package com.shop.productservice.product.controller;
 
 import com.shop.productservice.common.response.ResponseDto;
-import com.shop.productservice.dto.request.ProductCreateRequest;
-import com.shop.productservice.dto.response.ProductResponse;
-import com.shop.productservice.dto.response.ProductStockResponse;
-import com.shop.productservice.entity.Product;
-import com.shop.productservice.entity.ProductType;
-import com.shop.productservice.service.ProductService;
+import com.shop.productservice.product.dto.request.ProductCreateRequest;
+import com.shop.productservice.product.dto.response.ProductResponse;
+import com.shop.productservice.product.dto.response.ProductStockResponse;
+import com.shop.productservice.product.entity.Product;
+import com.shop.productservice.product.entity.ProductType;
+import com.shop.productservice.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

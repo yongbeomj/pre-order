@@ -1,6 +1,6 @@
-package com.shop.productservice.dto.response;
+package com.shop.productservice.product.dto.response;
 
-import com.shop.productservice.entity.Product;
+import com.shop.productservice.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

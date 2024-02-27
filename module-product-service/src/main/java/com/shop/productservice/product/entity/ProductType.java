@@ -1,4 +1,4 @@
-package com.shop.productservice.entity;
+package com.shop.productservice.product.entity;
 
 public enum ProductType {
     COMMON,

@@ -1,7 +1,7 @@
-package com.shop.productservice.repository;
+package com.shop.productservice.product.repository;
 
-import com.shop.productservice.entity.Product;
-import com.shop.productservice.entity.ProductType;
+import com.shop.productservice.product.entity.Product;
+import com.shop.productservice.product.entity.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

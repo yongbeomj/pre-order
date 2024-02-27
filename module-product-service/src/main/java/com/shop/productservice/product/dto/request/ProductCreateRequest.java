@@ -1,7 +1,7 @@
-package com.shop.productservice.dto.request;
+package com.shop.productservice.product.dto.request;
 
-import com.shop.productservice.entity.Product;
-import com.shop.productservice.entity.ProductType;
+import com.shop.productservice.product.entity.Product;
+import com.shop.productservice.product.entity.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
