@@ -1,6 +1,6 @@
 package com.shop.newsfeedservice.client;
 
-import com.shop.newsfeedservice.dto.request.NewsfeedSearchRequest;
+import com.shop.newsfeedservice.newsfeed.dto.request.NewsfeedSearchRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
