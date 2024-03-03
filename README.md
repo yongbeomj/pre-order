@@ -1,5 +1,6 @@
 # 예약 구매 서비스
 일반 상품과 예약 상품을 등록 및 구매 가능한 예약 구매 서비스입니다.
+MSA 구조로 설계하고 대규모 트래픽을 다뤄보기 위한 학습용 프로젝트입니다.
 
 ### Skills
 Java17, Spring boot3.x, MySQL, JPA, Redis, Docker, Gradle
