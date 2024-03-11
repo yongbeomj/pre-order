@@ -15,7 +15,9 @@ $ docker-compose up -d
 ```
 
 ### 아키텍쳐
+
 ### ERD
+![erd final](https://github.com/yongbeomj/pre-order/assets/87436495/4b1b0f58-825d-4a6a-8420-c6e3184c56e0)
 
 [API 명세서](https://documenter.getpostman.com/view/19637355/2sA2r3b73R)
 
