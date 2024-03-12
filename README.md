@@ -1,6 +1,7 @@
 # 예약 구매 서비스
-MSA 구조로 설계한 뉴스피드 서비스 + 실시간 재고 관리 서비스 입니다.
-MSA 및 대규모 트래픽을 다뤄보기 위한 학습용 프로젝트입니다.
+MSA 구조로 설계한 뉴스피드 서비스 + 실시간 재고 관리 서비스 입니다.</br>
+백엔드의 API 엔드포인트 구현 및 MSA 및 대규모 트래픽을 다뤄보기 위한 학습용 프로젝트입니다.</br>
+프론트엔드는 별도 구현되지 않은 상태입니다.
 
 ### Skills
 Java, Spring boot, Spring Data JPA, Feign Client, JWT, MySQL, Redis, Docker, Gradle
