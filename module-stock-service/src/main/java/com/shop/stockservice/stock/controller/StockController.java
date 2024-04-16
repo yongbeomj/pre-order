@@ -34,14 +34,14 @@ public class StockController {
     @Operation(summary = "재고 증가")
     @PostMapping("/increase")
     public ResponseEntity<?> increaseStock(@RequestParam("productId") Long productId, @RequestParam("quantity") Integer quantity) {
-        stockService.increaseStock(productId, quantity);
+        stockService.updateStock(productId, quantity, "incr");
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "재고 감소")
     @PostMapping("/decrease")
     public ResponseEntity<?> decreaseStock(@RequestParam("productId") Long productId, @RequestParam("quantity") Integer quantity) {
-        stockService.decreaseStock(productId, quantity);
+        stockService.updateStock(productId, quantity, "decr");
         return ResponseEntity.ok().build();
     }
 

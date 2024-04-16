@@ -2,10 +2,7 @@ package com.shop.paymentservice.payment.entity;
 
 import com.shop.paymentservice.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "payments")
 @Entity
@@ -30,7 +27,7 @@ public class Payment extends BaseTimeEntity {
         this.paymentType = paymentType;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
+    public void updatePaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
 }

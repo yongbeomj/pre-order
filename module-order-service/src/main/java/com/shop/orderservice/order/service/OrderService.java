@@ -9,12 +9,14 @@ import com.shop.orderservice.order.dto.response.ProductResponse;
 import com.shop.orderservice.order.entity.Order;
 import com.shop.orderservice.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -22,7 +24,7 @@ public class OrderService {
     private final StockClient stockClient;
 
     // 주문 생성
-    public synchronized Order createOrder(OrderCreateRequest request) {
+    public Order createOrder(OrderCreateRequest request) {
         // 재고 부족 여부 확인
         validateOrder(request.getProductId(), request.getQuantity());
 
