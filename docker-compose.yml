@@ -30,10 +30,3 @@ services:
     restart: always
     ports:
       - "8090:8080"
-
-  http-request-tool:
-    image: http-request-tool
-    restart: always
-    build:
-      context: http-request-tool
-      dockerfile: Dockerfile

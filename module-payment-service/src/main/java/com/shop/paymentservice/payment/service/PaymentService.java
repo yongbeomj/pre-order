@@ -10,16 +10,23 @@ import com.shop.paymentservice.payment.entity.Payment;
 import com.shop.paymentservice.payment.entity.PaymentType;
 import com.shop.paymentservice.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final OrderClient orderClient;
     private final StockClient stockClient;
+    private final RedissonClient redissonClient;
 
     // 결제 생성
     public Payment createPayment(PaymentCreateRequest request) {
@@ -29,22 +36,31 @@ public class PaymentService {
     // 결제 처리
     @Transactional
     public Payment processPayment(Long paymentId) {
-        Payment findPayment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new BaseException(ErrorCode.PAYMENT_NOT_FOUND));
+        RLock lock = redissonClient.getLock(paymentId.toString());
 
-        // 결제 중으로 변경
-        findPayment.setPaymentType(PaymentType.PROCESSING);
+        try {
+            if (!lock.tryLock(10, 1, TimeUnit.SECONDS)) {
+                throw new BaseException(ErrorCode.FAIL_TO_ACQUIRE_LOCK);
+            }
 
-        // 고객 귀책 사유 시뮬레이션 - 결제 실패 이탈 (20%)
-        if (Math.random() <= 0.2) {
-            handlePaymentFailure(findPayment, PaymentType.FAILED);
-            return findPayment;
+            Payment findPayment = paymentRepository.findById(paymentId)
+                    .orElseThrow(() -> new BaseException(ErrorCode.PAYMENT_NOT_FOUND));
+
+            // 고객 귀책 사유 시뮬레이션 - 결제 실패 이탈 (20%)
+            if (Math.random() <= 0.2) {
+                increaseStock(findPayment.getOrderId());
+                findPayment.updatePaymentType(PaymentType.FAILED);
+            } else {
+                findPayment.updatePaymentType(PaymentType.COMPLETED);
+            }
+
+            return paymentRepository.save(findPayment);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            lock.unlock();
         }
-
-        // 결제 처리 완료
-        findPayment.setPaymentType(PaymentType.COMPLETED);
-
-        return findPayment;
     }
 
     // 결제 취소
@@ -53,19 +69,16 @@ public class PaymentService {
         Payment findPayment = paymentRepository.findById(paymentId)
                 .orElseThrow(() -> new BaseException(ErrorCode.PAYMENT_NOT_FOUND));
 
-        handlePaymentFailure(findPayment, PaymentType.CANCELED);
+        increaseStock(findPayment.getOrderId());
+        findPayment.updatePaymentType(PaymentType.CANCELED);
+
         return findPayment;
     }
 
-    private void handlePaymentFailure(Payment payment, PaymentType paymentType) {
-        // 주문 정보 조회
-        OrderResponse response = orderClient.searchOrder(payment.getOrderId()).getBody();
-
-        // 재고 증가
+    @Transactional
+    public void increaseStock(Long orderId) {
+        OrderResponse response = orderClient.searchOrder(orderId).getBody();
         stockClient.increaseStock(response.getProductId(), response.getQuantity());
-
-        // 결제 상태 변경
-        payment.setPaymentType(paymentType);
     }
 
 }
