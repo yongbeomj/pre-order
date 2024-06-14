@@ -36,5 +36,5 @@ $ docker-compose up -d
 ### Trouble Shooting
 - 재고 동시성 이슈 : [바로가기](https://github.com/yongbeomj/pre-order/wiki/TroubleShooting)
 
-### 보완할 점 및 추가 학습 방향 - [바로가기](https://github.com/yongbeomj/pre-order/wiki/%EB%B3%B4%EC%99%84%ED%95%A0-%EC%A0%90-%EB%B0%8F-%EC%B6%94%EA%B0%80-%ED%95%99%EC%8A%B5-%EB%B0%A9%ED%96%A5)
+### 프로젝트 회고 - [바로가기](https://github.com/yongbeomj/pre-order/wiki/%EB%B3%B4%EC%99%84%ED%95%A0-%EC%A0%90-%EB%B0%8F-%EC%B6%94%EA%B0%80-%ED%95%99%EC%8A%B5-%EB%B0%A9%ED%96%A5)
 
